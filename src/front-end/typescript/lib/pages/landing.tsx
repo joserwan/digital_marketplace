@@ -9,6 +9,7 @@ import ProgramCard from 'front-end/lib/views/program-card';
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
 import { adt, ADT } from 'shared/lib/types';
+import {FormattedMessage} from 'react-intl';
 
 const IMG_MAX_WIDTH = '400px';
 
@@ -45,13 +46,19 @@ const Hero: ComponentView<State, Msg> = ({state, dispatch}) => {
       <Row className='justify-content-left text-left'>
         <Col md='5'>
           <h1 className='roboto' style={{lineHeight: '3.75rem'}}>
-            Collaborez <br/>avec le gouvernement <br/>du Québec
+            <FormattedMessage
+            description="Titre"
+            defaultMessage="Collaborez <br/>avec le gouvernement <br/>du Québec"
+            />
           </h1>
           <div className='mt-3 mb-3'>
-          Le marché numérique gouvernemental est une nouvelle
-          plateforme qui contribue à bâtir un écosystème en matière
-          d'innovation et de collaboration entre les entrepreneurs
-          technologiques et le gouvernement du Québec.
+            <FormattedMessage
+              description="Sous-Titre"
+              defaultMessage="Le marché numérique gouvernemental est une nouvelle
+              plateforme qui contribue à bâtir un écosystème en matière
+              d'innovation et de collaboration entre les entrepreneurs
+              technologiques et le gouvernement du Québec."
+            />
           </div>
           <Link
             button
@@ -60,14 +67,20 @@ const Hero: ComponentView<State, Msg> = ({state, dispatch}) => {
             dest={routeDest(adt('content', 'about'))}
             color='primary'
             className='mr-3'>
-            À propos
+            <FormattedMessage
+              description="Lien À propos"
+              defaultMessage="À propos"
+            />
           </Link>
           <Link
             button
             symbol_={rightPlacement(iconLinkSymbol('arrow-right'))}
             dest={routeDest(adt('opportunities', null))}
             color='primary'>
-            Parcourez les opportunités
+            <FormattedMessage
+              description="Lien Parcourez les opportunités"
+              defaultMessage="Parcourez les opportunités"
+            />
           </Link>
         </Col>
         <Col xs='12' sm='10' md='7'>
