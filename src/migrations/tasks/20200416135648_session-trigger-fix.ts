@@ -2,7 +2,8 @@ import { makeDomainLogger } from 'back-end/lib/logger';
 import { console as consoleAdapter } from 'back-end/lib/logger/adapters';
 import Knex from 'knex';
 
-makeDomainLogger(consoleAdapter, 'migrations');
+const nodeEnv = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+makeDomainLogger(consoleAdapter, 'migrations', nodeEnv);
 
 export async function up(connection: Knex): Promise<void> {
   // Drop previous trigger

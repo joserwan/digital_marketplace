@@ -2,7 +2,8 @@ import { makeDomainLogger } from 'back-end/lib/logger';
 import { console as consoleAdapter } from 'back-end/lib/logger/adapters';
 import Knex from 'knex';
 
-const logger = makeDomainLogger(consoleAdapter, 'migrations');
+const nodeEnv = process.env.NODE_ENV === 'production' ? 'production' : 'development';
+const logger = makeDomainLogger(consoleAdapter, 'migrations', nodeEnv);
 
 export async function up(connection: Knex): Promise<void> {
   await connection.schema.alterTable('swuOpportunityStatuses', table => {
