@@ -104,8 +104,7 @@ const productionMailerConfigOptions = {
   maxConnections: parseInt(get('MAILER_MAX_CONNECTIONS', '5'), 10)
 };
 
-/*
-const developmentMailerConfigOptions = {
+const developmentGmailMailerConfigOptions = {
   service: 'gmail',
   auth: {
     user: get('MAILER_GMAIL_USER', ''),
@@ -117,13 +116,16 @@ const developmentMailerConfigOptions = {
   pool: true,
   maxConnections: parseInt(get('MAILER_MAX_CONNECTIONS', '5'), 10)
 };
-*/
 
-const developmentMailerConfigOptions: SendmailTransport.Options = {
+const developmentSendmailMailerConfigOptions: SendmailTransport.Options = {
   sendmail: true,
   path: '/usr/sbin/sendmail',
   newline: 'unix'
 };
+
+const developmentMailerConfigOptions = get('MAILER_GMAIL_USER', '')
+? developmentGmailMailerConfigOptions
+: developmentSendmailMailerConfigOptions
 
 export const MAILER_CONFIG = ENV === 'development' ? developmentMailerConfigOptions : productionMailerConfigOptions;
 

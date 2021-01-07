@@ -4,7 +4,8 @@
 *.pem
 *.map
 *.DS_Store
-.env
+*.env
+!sample.env
 make.sh
 .sass-cache/
 node_modules/

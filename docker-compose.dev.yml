@@ -1,0 +1,78 @@
+version: "3"
+services:
+  db:
+    image: postgres:10
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: digitalmarketplace
+      POSTGRES_PASSWORD: digitalmarketplace
+      POSTGRES_DB: digitalmarketplace
+  keycloak:
+    image: keycloak
+    build: 
+      context: ./keycloak
+      args:
+        - ROOTURL=http://localhost:3000
+        - GITHUBID=2d3110b559e1267d4775
+        - GITHUBSECRET=899c72da2041a566dbe1a8a94e3eceaab31fd294
+        - KEYCLOAKURL=http://localhost:8080
+    ports:
+      - 8080:8080
+      - 9090:9090
+    environment: 
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+  ui:
+    image: devexchange
+    build: .
+    restart: always
+    ports:
+      - 3000:3000
+      - 25:25
+    volumes:
+      - ./erwan.env:/usr/app/.env
+      - ./src:/usr/app/src
+    command: npm run back-end:watch
+    depends_on: 
+      - keycloak
+      - db
+    # La variable KEYCLOAK_URL est utilisée 
+    # * coté client (qui ne reconnait pas le hostname du conteneur)
+    # * coté serveur (qui ne peux pas trouver localhost:8080)
+    # En utilisant le réseau host, on rend localhost:8080 accessible
+    network_mode: "host"
+    environment:
+      - NODE_ENV=development
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=3000
+      - POSTGRESQL_SERVICE_HOST=localhost
+      - POSTGRESQL_SERVICE_PORT=5432
+      - DATABASE_USERNAME=digitalmarketplace
+      - DATABASE_PASSWORD=digitalmarketplace
+      - DATABASE_NAME=digitalmarketplace
+      - COOKIE_SECRET=foobar
+      - ORIGIN=http://localhost:3000
+      - KEYCLOAK_ADMIN_USER=admin
+      - KEYCLOAK_ADMIN_PASS=admin
+      - KEYCLOAK_CLIENT_ID=dm-app
+      - KEYCLOAK_REALM=digitalmarketplace
+      # KEYCLOAK_CLIENT_SECRET se trouve dans l'interface admin de Keycloak:
+      # Realms > 'digitalmarketplace' > clients > 'Dm-app' > Credentials
+      - KEYCLOAK_CLIENT_SECRET=**************
+      - KEYCLOAK_URL=http://localhost:8080
+      - FILE_STORAGE_DIR=./tmp
+      - SCHEDULED_DOWNTIME=
+      - KNEX_DEBUG=false
+      - UPDATE_HOOK_THROTTLE=60000
+      - SERVICE_TOKEN_HASH=
+      - SHOW_TEST_INDICATOR=1
+
+      - CONTACT_EMAIL=**************@gmail.com
+      - MAILER_GMAIL_USER=**************@gmail.com
+      # Utliser un mot de passe applicatif
+      # Voir: https://support.google.com/accounts/answer/185833?hl=en
+      - MAILER_GMAIL_PASS=**************
+
+

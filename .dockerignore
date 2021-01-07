@@ -1,0 +1,7 @@
+node_modules
+codeready
+docs
+keycloak
+openshift
+styleguide
+.git*
