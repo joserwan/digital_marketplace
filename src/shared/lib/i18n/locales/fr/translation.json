@@ -1,0 +1,61 @@
+{
+  "links": {
+    "sign-in": "Connexion",
+    "sign-up": "Créer un compte",
+    "opportunities": "Opportunités",
+    "organizations": "Organisations",
+    "home": "Accueil",
+    "about": "À propos",
+    "browse-opportunities": "Parcourez les opportunités"
+  },
+  "landing": {
+    "header": "Collaborez <br/>avec le gouvernement <br/>du Québec"
+  },
+  "formatedDateTime": "{{date}} à {{time}}",
+  "yes": "Oui",
+  "no": "Non",
+	"notification": {
+    "anyQuestion": "If you have any questions, please send an email to {{email}}.",
+		"opportunity": {
+			"cwu": {
+        "title": "Développez avec nous",
+        "information": {
+          "type": "Type",
+          "value": "Montant",
+          "location": "Lieu",
+          "remoteOk": "Travail à distance accepté",
+          "proposalsDue": "Échéance des soumissions"
+        },
+				"updated": {
+					"title": "Une opportunité Développez Avec Nous a été mise à jour",
+          "description": "L'opportunité Digital Marketplace suivante a été mise à jour:"
+        },
+        "actioned": {
+          "cancelled": {
+            "title": "Une opportunité Développez Avec Nous a été annulée",
+            "description": "Vous avez annulé l'opportunité Digital Marketplace suivante:",
+            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé à l'administateur qui l'a annulée."
+          },
+          "suspended": {
+            "title": "Une opportunité Développez Avec Nous a été suspendue",
+            "description": "Vous avez suspendu l'opportunité Digital Marketplace suivante:",
+            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé l'administateur qui l'a annulée."
+          }
+        },
+        "subscribed": {
+          "cancelled": {
+            "title": "Une opportunité Développez Avec Nous a été annulée",
+            "description": "L'opportunité Digital Marketplace suivante a été annulée:",
+            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé aux utilisateurs abonnés et aux soumissionaires."
+          },
+          "suspended": {
+            "title": "Une opportunité Développez Avec Nous a été suspendue",
+            "description": "L'opportunité Digital Marketplace suivante a été suspendue:",
+            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé aux utilisateurs abonnés et aux soumissionaires.",
+            "notifyTheyMayChange": "Si vous avez déjà soumis une proposition à cette opportunité, vous pouvez y apporter des modification pendant que l'opportunité est suspendue."
+          }
+        }
+			}
+		}
+	}
+}

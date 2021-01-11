@@ -1,0 +1,56 @@
+{
+	"links": {
+		"sign-in": "Sign in",
+		"sign-up": "Sign up",
+		"opportunities": "Opportunities",
+		"organizations": "Organizations",
+		"home": "Home",
+		"about": "About",
+		"browse-opportunities": "Browse opportunities"
+	},
+	"landing": {
+		"header": "Collaborate <br/>with Québec<br/>government"
+  },
+  "formatedDateTime": "{{date}} at {{time}}",
+  "yes": "Yes",
+  "no": "No",
+	"notification": {
+    "anyQuestion": "Pour toute question, veuillez envoyer un courriel à {{email}}.",
+		"opportunity": {
+			"cwu": {
+        "title": "Code With Us",
+        "information": {
+          "type": "Type",
+          "value": "Value",
+          "location": "Location",
+          "remoteOk": "Remote OK",
+          "proposalsDue": "Proposal dues"
+        },
+				"updated": {
+          "title": "A Code With Us Opportunity Has Been Updated",
+          "description": "The following Digital Marketplace opportunity has been updated:"
+        },
+        "actioned": {
+          "cancelled": {
+            "title": "A Code With Us Opportunity Has Been Cancelled",
+            "description": "You have cancelled the following opportunity on the Digital Marketplace:",
+            "summary": "CWU opportunity cancelled; sent to the administrator who actioned."
+          }
+        },
+        "subscribed": {
+          "cancelled": {
+            "title": "A Code With Us Opportunity Has Been Cancelled",
+            "description": "The following Digital Marketplace opportunity has been cancelled:",
+            "summary": "CWU opportunity cancelled; sent to subscribed users and vendors with proposals."
+          },
+          "suspended": {
+            "title": "A Code With Us Opportunity Has Been Suspended",
+            "description": "The following Digital Marketplace opportunity has been suspended:",
+            "summary": "CWU opportunity suspended; sent to subscribed users and vendors with proposals.",
+            "notifyTheyMayChange": "If you have already submitted a proposal to this opportunity, you may make changes to it while the opportunity is suspended."
+          }
+        }
+			}
+		}
+	}
+}

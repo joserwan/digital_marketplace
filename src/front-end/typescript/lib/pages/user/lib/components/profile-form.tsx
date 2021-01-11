@@ -12,7 +12,7 @@ import { SUPPORTED_IMAGE_EXTENSIONS } from 'shared/lib/resources/file';
 import { isPublicSectorUserType, User, userTypeToKeycloakIdentityProvider } from 'shared/lib/resources/user';
 import { adt, ADT, Id } from 'shared/lib/types';
 import { ErrorTypeFrom, invalid, mapValid, valid, Validation } from 'shared/lib/validation';
-import { validateEmail, validateJobTitle, validateName } from 'shared/lib/validation/user';
+import { validateEmail, validateJobTitle, validateName, validateLocale } from 'shared/lib/validation/user';
 
 export interface Params {
   user: User;
@@ -22,12 +22,14 @@ export interface State extends Params {
   name: Immutable<ShortText.State>;
   email: Immutable<ShortText.State>;
   jobTitle: Immutable<ShortText.State>;
+  locale: Immutable<ShortText.State>;
   idpUsername: Immutable<ShortText.State>;
   newAvatarImage: AvatarFiletype;
 }
 
 export type Msg
   = ADT<'jobTitle',       ShortText.Msg>
+  | ADT<'locale',       ShortText.Msg>
   | ADT<'email',          ShortText.Msg>
   | ADT<'name',           ShortText.Msg>
   | ADT<'onChangeAvatar', File>
@@ -37,6 +39,7 @@ export interface Values {
   name: string;
   email: string;
   jobTitle: string;
+  locale: string;
   newAvatarImage?: File;
 }
 
@@ -47,6 +50,7 @@ export function getValues(state: Immutable<State>): Values {
     name: FormField.getValue(state.name),
     email: FormField.getValue(state.email),
     jobTitle: FormField.getValue(state.jobTitle),
+    locale: FormField.getValue(state.locale),
     newAvatarImage: state.newAvatarImage ? state.newAvatarImage.file : undefined
   };
 }
@@ -57,6 +61,7 @@ export function isValid(state: Immutable<State>): boolean {
       && (!state.newAvatarImage || !state.newAvatarImage.errors.length)
       && FormField.isValid(state.name)
       && FormField.isValid(state.email)
+      && FormField.isValid(state.locale)
       && FormField.isValid(state.jobTitle);
 }
 
@@ -65,6 +70,7 @@ export function setErrors(state: Immutable<State>, errors: Errors): Immutable<St
     .update('name', s => FormField.setErrors(s, errors.name || []))
     .update('email', s => FormField.setErrors(s, errors.email || []))
     .update('jobTitle', s => FormField.setErrors(s, errors.jobTitle || []))
+    .update('locale', s => FormField.setErrors(s, errors.locale || []))
     .update('newAvatarImage', v => v && ({ ...v, errors: errors.newAvatarImage || [] }));
 }
 
@@ -107,6 +113,15 @@ export const init: Init<Params, State> = async ({ user }) => {
         value: getString(user, 'jobTitle'),
         id: 'user-profile-job-title'
       }
+    })),
+    locale: immutable(await ShortText.init({
+      errors: [],
+      validate: v => mapValid(validateLocale(v), w => w || ''),
+      child: {
+        type: 'text',
+        value: getString(user, 'locale'),
+        id: 'user-profile-locale'
+      }
     }))
   };
 };
@@ -121,10 +136,18 @@ export const update: Update<State, Msg> = ({ state, msg }) => {
         childMsg: msg.value,
         mapChildMsg: (value) => adt('idpUsername', value)
       });
-    case 'jobTitle':
+      case 'jobTitle':
+        return updateComponentChild({
+          state,
+          childStatePath: ['jobTitle'],
+          childUpdate: ShortText.update,
+          childMsg: msg.value,
+          mapChildMsg: (value) => adt('jobTitle', value)
+        });
+    case 'locale':
       return updateComponentChild({
         state,
-        childStatePath: ['jobTitle'],
+        childStatePath: ['locale'],
         childUpdate: ShortText.update,
         childMsg: msg.value,
         mapChildMsg: (value) => adt('jobTitle', value)
@@ -220,13 +243,21 @@ export const view: View<Props> = props => {
               dispatch={mapComponentDispatch(dispatch, value => adt('jobTitle' as const, value))} />)
           : null}
 
-        <ShortText.view
-          extraChildProps={{}}
-          label='Email Address'
-          required
-          disabled={disabled}
-          state={state.email}
-          dispatch={mapComponentDispatch(dispatch, value => adt('email' as const, value))} />
+          <ShortText.view
+            extraChildProps={{}}
+            label='Email Address'
+            required
+            disabled={disabled}
+            state={state.email}
+            dispatch={mapComponentDispatch(dispatch, value => adt('email' as const, value))} />
+
+          <ShortText.view
+            extraChildProps={{}}
+            label='Locale'
+            required
+            disabled={disabled}
+            state={state.locale}
+            dispatch={mapComponentDispatch(dispatch, value => adt('locale' as const, value))} />
       </Col>
     </Row>
   );
@@ -275,6 +306,7 @@ export async function persist(params: PersistParams): Promise<PersistReturnValue
     name: values.name,
     email: values.email,
     jobTitle: values.jobTitle,
+    locale: values.locale,
     avatarImageFile
   }));
   switch (result.tag) {

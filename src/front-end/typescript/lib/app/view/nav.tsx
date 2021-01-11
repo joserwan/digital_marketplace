@@ -357,7 +357,6 @@ const TopNavbar: View<Props> = props => {
                   <li>
                     <a href="#" lang="en"
                       onClick={() => {
-                        console.log(i18n);
                         i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
                       }}
                     >

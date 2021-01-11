@@ -2,7 +2,10 @@
 
 ## Objectifs
 
-Démontrer la possibilité d'offrir une interfance utilisateur bilingue français / anglais en utilisant une librairie standard d'internationalisation (i18n).
+* Démontrer la possibilité d'offrir une interfance utilisateur bilingue français / anglais
+* Utiliser une méthode standard d'internationalisation (i18n)
+* Faciliter la traduction
+* Garder autant que possible un lien avec le projet DevExchange de BC
 
 ## Démarche
 
@@ -32,6 +35,8 @@ Démontrer la possibilité d'offrir une interfance utilisateur bilingue françai
     * [Texte simple](https://github.com/CQEN-QDCE/digital_marketplace/pull/8/files#diff-49ba705a71b5fcf70fda8a1776d5a64ddb570f4579c1a3a1ca2700c0a70e9702R446)
     * [Code HTML](https://github.com/CQEN-QDCE/digital_marketplace/pull/8/files#diff-d858b784729b6e4303f3200b8057ecf766d1eb7ee913e43db5e233c2a9960939R49)
 
+> La preuve de concept réalise déjà les étapes 1 à 6. L'étape 7 est à compléter lors de la phase de réalisation. Nous les mentionnons tout de même.
+
 ## Résultats
 
 > Note: Les fonctionnalités qui n'ont pas été testées ne sont pas requises selon les besoins actuels de l'application.
@@ -43,13 +48,9 @@ Démontrer la possibilité d'offrir une interfance utilisateur bilingue françai
 | Adapter une image selon la langue | ✓ |
 | Détecter le langage du système d'exploitation de l'utilisateur | ✓ |
 | Sauvegarder les préférences linguistiques de l'utilisateur <sup>[1](#localstorage)</sup> | ✓ |
-| Traduire du texte côté serveur<sup>[2](#ssi18n)</sup> | Non-testé |
-| Sauvegarder les préférences linguistiques d'un utilisateur dans le SGBD<sup>[3](#save-prefs)</sup> | Non-testé |
+| Traduire du texte côté serveur | ✓ |
+| Sauvegarder les préférences linguistiques d'un utilisateur dans le SGBD | ✓ |
 ---
 <a name="localstorage">1</a>: Les préférences sont enregistrées dans le stockage local du navigateur de l'utilisateur.
-
-<a name="ssi18n">2</a>: Le module utilisé n'est compatible qu'avec le cadre d'application React. Pour une traduction côté serveur, il sera possible de réutiliser les fichiers de traduction, mais un autre [sous-module](https://github.com/i18next/i18next-http-middleware) devra être installé.
-
-<a name="save-prefs">3</a>: Cette fonctionnalité est supposée facile à implanter.
 
 ## Analyse

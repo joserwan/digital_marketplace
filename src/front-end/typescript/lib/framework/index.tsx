@@ -7,7 +7,7 @@ import * as Immutable from 'immutable';
 import { remove } from 'lodash';
 import { default as React, ReactElement } from 'react';
 import ReactDom from 'react-dom';
-import 'front-end/lib/i18n';
+import 'shared/lib/i18n';
 import { adt, ADT, adtCurried } from 'shared/lib/types';
 export { newUrl, replaceUrl, replaceRoute, newRoute } from 'front-end/lib/framework/router';
 

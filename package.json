@@ -72,6 +72,7 @@
     "i18next": "^19.7.0",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-fs-backend": "^1.0.7",
+    "i18next-http-middleware": "^3.0.6",
     "immutable": "^4.0.0-rc.12",
     "jimp": "^0.16.0",
     "keycloak-connect": "^8.0.0",

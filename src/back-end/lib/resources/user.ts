@@ -88,6 +88,7 @@ const resource: Resource = {
               name: getString(value, 'name'),
               email: getString(value, 'email'),
               jobTitle: getString(value, 'jobTitle'),
+              locale: getString(value, 'locale'),
               avatarImageFile: getString(value, 'avatarImageFile') || undefined
             });
 
@@ -130,13 +131,14 @@ const resource: Resource = {
         }
         switch (request.body.tag) {
           case 'updateProfile':
-            const { name, email, jobTitle, avatarImageFile } = request.body.value;
+            const { name, email, jobTitle, avatarImageFile, locale } = request.body.value;
             const validatedName = userValidation.validateName(name);
             const validatedEmail = userValidation.validateEmail(email);
             const validatedJobTitle = userValidation.validateJobTitle(jobTitle);
+            const validatedLocale = userValidation.validateLocale(locale);
             const validatedAvatarImageFile = await optionalAsync(avatarImageFile, v => validateFileRecord(connection, v));
 
-            if (allValid([validatedName, validatedEmail, validatedJobTitle, validatedAvatarImageFile])) {
+            if (allValid([validatedName, validatedEmail, validatedJobTitle, validatedAvatarImageFile, validatedLocale])) {
               if (!permissions.updateUser(request.session, request.params.id)) {
                 return invalid({ permissions: [permissions.ERROR_MESSAGE] });
               }
@@ -144,6 +146,7 @@ const resource: Resource = {
                 name: validatedName.value,
                 email: validatedEmail.value,
                 jobTitle: validatedJobTitle.value,
+                locale: validatedLocale.value,
                 avatarImageFile: isValid(validatedAvatarImageFile) && validatedAvatarImageFile.value && validatedAvatarImageFile.value.id
               } as UpdateProfileRequestBody));
             } else {
@@ -152,6 +155,7 @@ const resource: Resource = {
                   name: getInvalidValue(validatedName, undefined),
                   email: getInvalidValue(validatedEmail, undefined),
                   jobTitle: getInvalidValue(validatedJobTitle, undefined),
+                  ocale: getInvalidValue(validatedLocale, undefined),
                   avatarImageFile: getInvalidValue(validatedAvatarImageFile, undefined)
                 })
               });

@@ -15,6 +15,10 @@ export function validateJobTitle(v: string): Validation<string> {
   return validateGenericString(v, 'Job Title', 0);
 }
 
+export function validateLocale(v: string): Validation<string> {
+  return validateGenericString(v, 'locale', 0);
+}
+
 export function validateUserType(type: string): Validation<UserType> {
   const userType = parseUserType(type);
   return userType ? valid(userType) : invalid(['Invalid user type specified.']);

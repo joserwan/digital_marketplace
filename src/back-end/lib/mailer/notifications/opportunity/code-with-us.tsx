@@ -10,6 +10,7 @@ import { formatAmount, formatDate, formatTime } from 'shared/lib';
 import { CWUOpportunity } from 'shared/lib/resources/opportunity/code-with-us';
 import { User } from 'shared/lib/resources/user';
 import { getValidValue } from 'shared/lib/validation';
+import i18n from 'shared/lib/i18n'
 
 export async function handleCWUPublished(connection: db.Connection, opportunity: CWUOpportunity, repost: boolean): Promise<void> {
   // Notify all users with notifications turned on
@@ -81,14 +82,14 @@ export async function newCWUOpportunityPublishedT(recipients: User[], opportunit
   for (let i = 0; i < recipients.length; i += MAILER_BATCH_SIZE) {
     const batch = recipients.slice(i, i + MAILER_BATCH_SIZE);
     emails.push({
-      summary: `${repost ? 'CWU opportunity re-published after suspension' : 'New CWU opportunity published'}; sent to user with notifications turned on.`,
+    summary: `${repost ? 'CWU opportunity re-published after suspension' : 'New CWU opportunity published'}; sent to user with notifications turned on.`,
       to: MAILER_REPLY,
       bcc: batch.map(r => r.email || ''),
       subject: title,
       html: templates.simple({
         title,
         description: `A ${repost ? 'previously suspended' : 'new'} opportunity has been ${repost ? 're-posted' : 'posted'} to the Digital Marketplace:`,
-        descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+        descriptionLists: [makeCWUOpportunityInformation(opportunity, batch[0].locale)],
         callsToAction: [viewCWUOpportunityCallToAction(opportunity)]
       })
     });
@@ -108,7 +109,7 @@ export async function successfulCWUPublicationT(recipient: User, opportunity: CW
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       body: (
         <div>
           <p style={{...templates.styles.utilities.font.italic}}>What Happens Next?</p>
@@ -124,43 +125,59 @@ export async function successfulCWUPublicationT(recipient: User, opportunity: CW
 
 export const updatedCWUOpportunity = makeSend(updatedCWUOpportunityT);
 
+export function recipientsPerLocalization(recipients: User[]): {[key:string]: User[]} {
+  const localizedUsers: {[key:string]: User[]} = {};
+  return recipients.reduce( (prev, cur) => {
+    const locale = cur.locale || 'en'; 
+    prev[locale] = prev[cur.locale || 'en'] || []
+    prev[locale].push(cur)
+    return prev;
+  }, localizedUsers )
+}
+
 export async function updatedCWUOpportunityT(recipients: User[], opportunity: CWUOpportunity): Promise<Emails> {
-  const title = 'A Code With Us Opportunity Has Been Updated';
-  const description = 'The following Digital Marketplace opportunity has been updated:';
   const emails: Emails = [];
-  for (let i = 0; i < recipients.length; i += MAILER_BATCH_SIZE) {
-    const batch = recipients.slice(i, i + MAILER_BATCH_SIZE);
-    emails.push({
-      to: MAILER_REPLY,
-      subject: title,
-      bcc: batch.map(r => r.email || ''),
-      html: templates.simple({
-        title,
-        description,
-        descriptionLists: [makeCWUOpportunityInformation(opportunity)],
-        callsToAction: [viewCWUOpportunityCallToAction(opportunity)]
-      })
-    });
-  }
+  const localizedUsers = recipientsPerLocalization(recipients);
+
+  Object.keys(localizedUsers).forEach(locale => {
+    i18n.changeLanguage(locale);
+    const title = i18n.t('notification.opportunity.cwu.updated.title');
+    const description = i18n.t('notification.opportunity.cwu.updated.description');
+    for (let i = 0; i < recipients.length; i += MAILER_BATCH_SIZE) {
+      const batch = recipients.slice(i, i + MAILER_BATCH_SIZE);
+      emails.push({
+        to: MAILER_REPLY,
+        subject: title,
+        bcc: batch.map(r => r.email || ''),
+        html: templates.simple({
+          title,
+          description,
+          descriptionLists: [makeCWUOpportunityInformation(opportunity, locale)],
+          callsToAction: [viewCWUOpportunityCallToAction(opportunity)]
+        })
+      });
+    }
+  })
   return emails;
 }
 
 export const cancelledCWUOpportunitySubscribed = makeSend(cancelledCWUOpportunitySubscribedT);
 
 export async function cancelledCWUOpportunitySubscribedT(recipient: User, opportunity: CWUOpportunity): Promise<Emails> {
-  const title = 'A Code With Us Opportunity Has Been Cancelled';
-  const description = 'The following Digital Marketplace opportunity has been cancelled:';
+  i18n.changeLanguage(recipient.locale);
+  const title = i18n.t('notification.opportunity.cwu.subscribed.cancelled.title');
+  const description = i18n.t('notification.opportunity.cwu.subscribed.cancelled.description');
   return [{
-    summary: 'CWU opportunity cancelled; sent to subscribed users and vendors with proposals.',
+    summary: i18n.t('notification.opportunity.cwu.subscribed.cancelled.description'),
     to: recipient.email || [],
     subject: title,
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       body: (
         <div>
-          <p>If you have any questions, please send an email to <templates.Link text={CONTACT_EMAIL} url={CONTACT_EMAIL} />.</p>
+          <p>{i18n.t('notification.anyQuestion', {email: <templates.Link text={CONTACT_EMAIL} url={CONTACT_EMAIL} />})}</p>
         </div>
       )
     })
@@ -170,16 +187,17 @@ export async function cancelledCWUOpportunitySubscribedT(recipient: User, opport
 export const cancelledCWUOpportunityActioned = makeSend(cancelledCWUOpportunityActionedT);
 
 export async function cancelledCWUOpportunityActionedT(recipient: User, opportunity: CWUOpportunity): Promise<Emails> {
-  const title = 'A Code With Us Opportunity Has Been Cancelled';
-  const description = 'You have cancelled the following opportunity on the Digital Marketplace:';
+  i18n.changeLanguage(recipient.locale);
+  const title = i18n.t('notification.opportunity.cwu.actioned.cancelled.title');
+  const description = i18n.t('notification.opportunity.cwu.actioned.cancelled.description');
   return[{
-    summary: 'CWU opportunity cancelled; sent to the administrator who actioned.',
+    summary: i18n.t('notification.opportunity.cwu.actioned.cancelled.summary'),
     to: recipient.email || [],
     subject: title,
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)]
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)]
     })
   }];
 }
@@ -187,20 +205,22 @@ export async function cancelledCWUOpportunityActionedT(recipient: User, opportun
 export const suspendedCWUOpportunitySubscribed = makeSend(suspendedCWUOpportunitySubscribedT);
 
 export async function suspendedCWUOpportunitySubscribedT(recipient: User, opportunity: CWUOpportunity): Promise<Emails> {
-  const title = 'A Code With Us Opportunity Has Been Suspended';
-  const description = 'The following Digital Marketplace opportunity has been suspended:';
+  i18n.changeLanguage(recipient.locale);
+  const title = i18n.t('notification.opportunity.cwu.subscribed.suspended.title');
+  const description = i18n.t('notification.opportunity.cwu.subscribed.suspended.description');
+  const summary = i18n.t('notification.opportunity.cwu.subscribed.suspended.summary');
   return [{
-    summary: 'CWU opportunity suspended; sent to subscribed users and vendors with proposals.',
+    summary,
     to: recipient.email || [],
     subject: title,
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       body: (
         <div>
-          <p>If you have already submitted a proposal to this opportunity, you may make changes to it while the opportunity is suspended.</p>
-          <p>If you have any questions, please send an email to <templates.Link text={CONTACT_EMAIL} url={CONTACT_EMAIL} />.</p>
+          <p>{i18n.t('notification.opportunity.cwu.subscribed.suspended.notifyTheyMayChange')}</p>
+          <p>{i18n.t('notification.anyQuestion', {email: <templates.Link text={CONTACT_EMAIL} url={CONTACT_EMAIL} />})}</p>
         </div>
       )
     })
@@ -210,16 +230,18 @@ export async function suspendedCWUOpportunitySubscribedT(recipient: User, opport
 export const suspendedCWUOpportunityActioned = makeSend(suspendedCWUOpportunityActionedT);
 
 export async function suspendedCWUOpportunityActionedT(recipient: User, opportunity: CWUOpportunity): Promise<Emails> {
-  const title = 'A Code With Us Opportunity Has Been Suspended';
-  const description = 'You have suspended the following opportunity on the Digital Marketplace:';
+  i18n.changeLanguage(recipient.locale);
+  const title = i18n.t('notification.opportunity.cwu.actioned.suspended.title');
+  const description = i18n.t('notification.opportunity.cwu.actioned.suspended.description');
+  const summary = i18n.t('notification.opportunity.cwu.actioned.suspended.summary');
   return[{
-    summary: 'CWU opportunity suspended; sent to the administrator who actioned.',
+    summary,
     to: recipient.email || [],
     subject: title,
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)]
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)]
     })
   }];
 }
@@ -227,6 +249,7 @@ export async function suspendedCWUOpportunityActionedT(recipient: User, opportun
 export const readyForEvalCWUOpportunity = makeSend(readyForEvalCWUOpportunityT);
 
 export async function readyForEvalCWUOpportunityT(recipient: User, opportunity: CWUOpportunity): Promise<Emails> {
+  i18n.changeLanguage(recipient.locale);
   const title = 'Your Code With Us Opportunity is Ready to Be Evaluated';
   const description = 'Your Digital Marketplace opportunity has reached its proposal deadline.';
   return[{
@@ -235,7 +258,7 @@ export async function readyForEvalCWUOpportunityT(recipient: User, opportunity: 
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       body: (
         <div>
           <p>You may now view proposals submitted by Vendors and assign scores to each submission.</p>
@@ -246,15 +269,16 @@ export async function readyForEvalCWUOpportunityT(recipient: User, opportunity: 
   }];
 }
 
-export function makeCWUOpportunityInformation(opportunity: CWUOpportunity, showDueDate = true): templates.DescriptionListProps {
+export function makeCWUOpportunityInformation(opportunity: CWUOpportunity, locale: string, showDueDate = true): templates.DescriptionListProps {
+  i18n.changeLanguage(locale);
   const items = [
-    { name: 'Type', value: 'Code With Us' },
-    { name: 'Value', value: `$${formatAmount(opportunity.reward)}` },
-    { name: 'Location', value: opportunity.location },
-    { name: 'Remote OK?', value: opportunity.remoteOk ? 'Yes' : 'No' }
+    { name: i18n.t('notification.opportunity.cwu.information.type'), value: i18n.t('notification.opportunity.cwu.title') },
+    { name: i18n.t('notification.opportunity.cwu.information.value'), value: `$${formatAmount(opportunity.reward)}` },
+    { name: i18n.t('notification.opportunity.cwu.information.location'), value: opportunity.location },
+    { name: i18n.t('notification.opportunity.cwu.information.remoteOk'), value: opportunity.remoteOk ? i18n.t('yes') : i18n.t('no') }
   ];
   if (showDueDate) {
-    items.push({ name: 'Proposals Due', value: `${formatDate(opportunity.proposalDeadline, false)} at ${formatTime(opportunity.proposalDeadline, true)}` });
+    items.push({ name: i18n.t('notification.opportunity.cwu.information.proposalsDue'), value: `${i18n.t('formatedDateTime', { date: formatDate(opportunity.proposalDeadline, false), time: formatTime(opportunity.proposalDeadline, true)})}` });
   }
   return {
     title: opportunity.title,
