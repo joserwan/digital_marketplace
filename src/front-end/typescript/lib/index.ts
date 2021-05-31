@@ -109,7 +109,7 @@ export function getContextualActionsValid<ValidState, Msg>(getContextualActions:
 
 export const TITLE_SEPARATOR = '—';
 
-export function makePageMetadata(title: string): PageMetadata {
+export function makePageMetadata(title?: string): PageMetadata {
   return {
     title: `${title} ${TITLE_SEPARATOR} Échanges entre concepteurs`
   };

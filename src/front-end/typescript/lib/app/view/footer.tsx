@@ -1,7 +1,8 @@
 import { SOURCE_CODE_URL, PROCUREMENT_CONCIERGE_URL } from 'front-end/config';
+import { CONTACT_EMAIL } from 'shared/config';
 import { prefixPath } from 'front-end/lib';
 import { View } from 'front-end/lib/framework';
-import Link, { AnchorProps, externalDest, iconLinkSymbol, leftPlacement, rightPlacement, routeDest } from 'front-end/lib/views/link';
+import Link, { AnchorProps, externalDest, iconLinkSymbol, leftPlacement, rightPlacement, routeDest, emailDest } from 'front-end/lib/views/link';
 import Separator from 'front-end/lib/views/separator';
 import React from 'react';
 import { Col, Container, Row } from 'reactstrap';
@@ -13,20 +14,28 @@ const links: AnchorProps[] = [
     dest: routeDest(adt('landing', null))
   },
   {
-    children: 'Accessibilité',
-    dest: routeDest(adt('content', 'accessibility'))
+    children: 'About',
+    dest: routeDest(adt('contentView', 'about'))
   },
   {
-    children: 'Avertissement',
-    dest: routeDest(adt('content', 'disclaimer'))
+    children: 'Disclaimer',
+    dest: routeDest(adt('contentView', 'disclaimer'))
   },
   {
-    children: 'Politique de confidentialité',
-    dest: routeDest(adt('content', 'privacy'))
+    children: 'Privacy',
+    dest: routeDest(adt('contentView', 'privacy'))
   },
   {
-    children: "À propos d'Échange entre concepteurs",
-    dest: routeDest(adt('content', 'about'))
+    children: 'Accessibility',
+    dest: routeDest(adt('contentView', 'accessibility'))
+  },
+  {
+    children: 'Copyright',
+    dest: routeDest(adt('contentView', 'copyright'))
+  },
+  {
+    children: 'Contact Us',
+    dest: emailDest([CONTACT_EMAIL])
   },
   {
     children: 'Source Code',
