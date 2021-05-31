@@ -6,7 +6,10 @@ import * as Nav from 'front-end/lib/app/view/nav';
 import * as AcceptNewTerms from 'front-end/lib/components/accept-new-app-terms';
 import { Dispatch, immutable, Immutable, initAppChildPage, newRoute, Update, updateAppChildPage, updateComponentChild } from 'front-end/lib/framework';
 import * as api from 'front-end/lib/http/api';
-import * as PageContent from 'front-end/lib/pages/content';
+import * as PageContentCreate from 'front-end/lib/pages/content/create';
+import * as PageContentEdit from 'front-end/lib/pages/content/edit';
+import * as PageContentList from 'front-end/lib/pages/content/list';
+import * as PageContentView from 'front-end/lib/pages/content/view';
 import * as PageDashboard from 'front-end/lib/pages/dashboard';
 import * as PageLanding from 'front-end/lib/pages/landing';
 import * as PageLearnMoreCWU from 'front-end/lib/pages/learn-more/code-with-us';
@@ -408,15 +411,51 @@ async function initPage(state: Immutable<State>, dispatch: Dispatch<Msg>, route:
         }
       });
 
-    case 'content':
+    case 'contentView':
       return await initAppChildPage({
         ...defaultPageInitParams,
-        childStatePath: ['pages', 'content'],
+        childStatePath: ['pages', 'contentView'],
         childRouteParams: route.value,
-        childInit: PageContent.component.init,
-        childGetMetadata: PageContent.component.getMetadata,
+        childInit: PageContentView.component.init,
+        childGetMetadata: PageContentView.component.getMetadata,
         mapChildMsg(value) {
-          return { tag: 'pageContent' as const, value };
+          return { tag: 'pageContentView' as const, value };
+        }
+      });
+
+    case 'contentCreate':
+      return await initAppChildPage({
+        ...defaultPageInitParams,
+        childStatePath: ['pages', 'contentCreate'],
+        childRouteParams: route.value,
+        childInit: PageContentCreate.component.init,
+        childGetMetadata: PageContentCreate.component.getMetadata,
+        mapChildMsg(value) {
+          return { tag: 'pageContentCreate' as const, value };
+        }
+      });
+
+    case 'contentEdit':
+      return await initAppChildPage({
+        ...defaultPageInitParams,
+        childStatePath: ['pages', 'contentEdit'],
+        childRouteParams: route.value,
+        childInit: PageContentEdit.component.init,
+        childGetMetadata: PageContentEdit.component.getMetadata,
+        mapChildMsg(value) {
+          return { tag: 'pageContentEdit' as const, value };
+        }
+      });
+
+    case 'contentList':
+      return await initAppChildPage({
+        ...defaultPageInitParams,
+        childStatePath: ['pages', 'contentList'],
+        childRouteParams: route.value,
+        childInit: PageContentList.component.init,
+        childGetMetadata: PageContentList.component.getMetadata,
+        mapChildMsg(value) {
+          return { tag: 'pageContentList' as const, value };
         }
       });
 
@@ -505,7 +544,6 @@ const update: Update<State, Msg> = ({ state, msg }) => {
 
     case '@incomingRoute':
       const incomingRoute = msg.value.route;
-      const preserveScrollPosition = msg.value.preserveScrollPosition;
       return [
         startTransition(state),
         async (state, dispatch) => {
@@ -530,10 +568,18 @@ const update: Update<State, Msg> = ({ state, msg }) => {
           if (incomingRoute.tag === 'signOut') {
             state = setSession(state, await api.sessions.readOne(CURRENT_SESSION_ID));
           }
-          // Scroll to top if not a popstate event.
-          const html = document.documentElement;
-          if (!preserveScrollPosition && html.scrollTo) { html.scrollTo(0, 0); }
+          // Scroll to correct Y position.
+          dispatch(adt('scrollTo', msg.value.routeScrollY));
           return state;
+        }
+      ];
+
+    case 'scrollTo':
+      return [
+        state,
+        async (state, dispatch) => {
+          document.documentElement.scrollTo(0, msg.value);
+          return null;
         }
       ];
 
@@ -541,9 +587,9 @@ const update: Update<State, Msg> = ({ state, msg }) => {
       return [state, async (state, dispatch) => {
         dispatch(adt('@incomingRoute', {
           route: state.activeRoute,
-          preserveScrollPosition: true
+          routeScrollY: window.scrollY
         }));
-        return state;
+        return null;
       }];
 
     case '@toast':
@@ -933,13 +979,43 @@ const update: Update<State, Msg> = ({ state, msg }) => {
         childMsg: msg.value
       });
 
-    case 'pageContent':
+    case 'pageContentView':
       return updateAppChildPage({
         ...defaultPageUpdateParams,
-        mapChildMsg: value => ({ tag: 'pageContent', value }),
-        childStatePath: ['pages', 'content'],
-        childUpdate: PageContent.component.update,
-        childGetMetadata: PageContent.component.getMetadata,
+        mapChildMsg: value => ({ tag: 'pageContentView', value }),
+        childStatePath: ['pages', 'contentView'],
+        childUpdate: PageContentView.component.update,
+        childGetMetadata: PageContentView.component.getMetadata,
+        childMsg: msg.value
+      });
+
+    case 'pageContentCreate':
+      return updateAppChildPage({
+        ...defaultPageUpdateParams,
+        mapChildMsg: value => ({ tag: 'pageContentCreate', value }),
+        childStatePath: ['pages', 'contentCreate'],
+        childUpdate: PageContentCreate.component.update,
+        childGetMetadata: PageContentCreate.component.getMetadata,
+        childMsg: msg.value
+      });
+
+    case 'pageContentEdit':
+      return updateAppChildPage({
+        ...defaultPageUpdateParams,
+        mapChildMsg: value => ({ tag: 'pageContentEdit', value }),
+        childStatePath: ['pages', 'contentEdit'],
+        childUpdate: PageContentEdit.component.update,
+        childGetMetadata: PageContentEdit.component.getMetadata,
+        childMsg: msg.value
+      });
+
+    case 'pageContentList':
+      return updateAppChildPage({
+        ...defaultPageUpdateParams,
+        mapChildMsg: value => ({ tag: 'pageContentList', value }),
+        childStatePath: ['pages', 'contentList'],
+        childUpdate: PageContentList.component.update,
+        childGetMetadata: PageContentList.component.getMetadata,
         childMsg: msg.value
       });
 

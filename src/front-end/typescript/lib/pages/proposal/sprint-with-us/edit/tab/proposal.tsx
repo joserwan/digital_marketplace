@@ -68,10 +68,10 @@ const init: Init<Tab.Params, State> = async params => {
   const { opportunity, proposal, viewerUser } = params;
   const organizationsResult = await api.ownedOrganizations.readMany();
   if (!api.isValid(organizationsResult)) { return invalid(null); }
-  const evalContentResult = await api.getMarkdownFile(SWU_PROPOSAL_EVALUATION_CONTENT_ID);
+  const evalContentResult = await api.content.readOne(SWU_PROPOSAL_EVALUATION_CONTENT_ID);
   if (!api.isValid(evalContentResult)) { return invalid(null); }
   const organizations = organizationsResult.value;
-  const evaluationContent = evalContentResult.value;
+  const evaluationContent = evalContentResult.value.body;
   return valid(immutable({
     ...params,
     organizations,
@@ -379,7 +379,7 @@ export const component: Tab.Component<State, Msg> = {
               opportunityType='Sprint With Us'
               action='submitting'
               termsTitle='Sprint With Us Terms & Conditions'
-              termsRoute={adt('content', 'sprint-with-us-terms-and-conditions')}
+              termsRoute={adt('contentView', 'sprint-with-us-terms-and-conditions')}
               state={state.submitTerms}
               dispatch={mapComponentDispatch(dispatch, msg => adt('submitTerms', msg) as Msg)} />
           ),
@@ -408,7 +408,7 @@ export const component: Tab.Component<State, Msg> = {
               opportunityType='Sprint With Us'
               action='submitting changes to'
               termsTitle='Sprint With Us Terms & Conditions'
-              termsRoute={adt('content', 'sprint-with-us-terms-and-conditions')}
+              termsRoute={adt('contentView', 'sprint-with-us-terms-and-conditions')}
               state={state.submitTerms}
               dispatch={mapComponentDispatch(dispatch, msg => adt('submitTerms', msg) as Msg)} />
           ),
