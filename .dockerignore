@@ -5,3 +5,5 @@ keycloak
 openshift
 styleguide
 .git*
+Dockerfile*
+docker-*

@@ -28,14 +28,16 @@ services:
       - KEYCLOAK_PASSWORD=admin
   ui:
     image: devexchange
-    build: .
+    build: 
+      context: .
+      target: development
     restart: always
     ports:
       - 3000:3000
       - 5000:5000 # Doc
     volumes:
-      - ./src:/usr/app/src
-    command: bash -c "/usr/app/.env && npm run migrations:latest && npm run back-end:watch"
+      - ./:/usr/app/
+    #command: bash -c "pm2-runtime ecosystem.config.js"
     depends_on: 
       - keycloak
       - db
