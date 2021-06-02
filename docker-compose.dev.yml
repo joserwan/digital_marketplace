@@ -32,6 +32,7 @@ services:
     restart: always
     ports:
       - 3000:3000
+      - 5000:5000 # Doc
     volumes:
       - ./src:/usr/app/src
     command: bash -c "/usr/app/.env && npm run migrations:latest && npm run back-end:watch"
@@ -66,4 +67,5 @@ services:
       - KNEX_DEBUG=false
       - UPDATE_HOOK_THROTTLE=60000
       - SERVICE_TOKEN_HASH=
-      - SHOW_TEST_INDICATOR=1
+      - SHOW_TEST_INDICATOR=true
+      - SWAGGER_ENABLE=true

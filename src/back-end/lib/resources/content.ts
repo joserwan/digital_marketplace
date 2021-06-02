@@ -81,7 +81,6 @@ const resource: Resource = {
       if (!dbResult.value) {
         return respond(404, ['Content not found']);
       }
-
       return respond(200, dbResult.value);
     });
   },
