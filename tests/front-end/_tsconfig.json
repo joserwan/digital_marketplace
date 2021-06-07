@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "es2018",
     "moduleResolution": "node",
-    "jsx": "react",
+    "noErrorTruncation": true,
     "allowJs": true,
+    "noEmit": true,
     "strict": true,
     "noImplicitReturns": true,
     "forceConsistentCasingInFileNames": true,
@@ -12,20 +12,15 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "noErrorTruncation": true,
-    "baseUrl": ".",
     "incremental": true,
+    "baseUrl": ".",
     "paths": {
-      "front-end/*": ["./*"],
-      "shared/*": ["../../shared/*"]
-    }
+      "front-end/*": ["../../src/front-end/*"],
+      "shared/*": ["../../src/shared/*"]
+    },
+    "types": ["node", "mocha"]
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.json",
-    "**/*.js",
-    "*.ts",
-    "./jest.config.js"  
-]
+    "**/*.ts"
+  ]
 }
