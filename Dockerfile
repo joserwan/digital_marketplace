@@ -1,4 +1,4 @@
-FROM docker.io/node:lts-jessie AS base
+FROM docker.io/node:14 AS base
 RUN apt-get update
 RUN apt-get -y install sendmail
 WORKDIR /usr/app
@@ -16,7 +16,7 @@ EXPOSE 3000
 USER node
 CMD pm2-runtime ecosystem.config.js
 
-FROM docker.io/node:lts-jessie AS production
+FROM docker.io/node:14 AS production
 WORKDIR /usr/app
 COPY package.json package.json
 COPY package-lock.json package-lock.json
