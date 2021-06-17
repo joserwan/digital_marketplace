@@ -71,3 +71,12 @@ services:
       - SERVICE_TOKEN_HASH=
       - SHOW_TEST_INDICATOR=true
       - SWAGGER_ENABLE=true
+
+  selenium:
+    image: selenium/standalone-chrome-debug
+    network_mode: "host"
+    ports:
+      - 4444:4444
+      - 5999:5900
+    volumes:
+      - /dev/shm:/dev/shm

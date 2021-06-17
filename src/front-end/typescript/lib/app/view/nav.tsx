@@ -221,7 +221,7 @@ const DesktopAccountMenu: View<Props> = props => {
               dispatch={dispatch}
               color='c-nav-fg'
               key={`desktop-account-menu-action-${i}`} />
-            ))}
+          ))}
         </Fragment>
       );
     case 'authenticated':
@@ -254,7 +254,7 @@ const MobileAccountMenu: View<Props> = props => {
             className={`${i !== arr.length - 1 ? marginClassName : ''} ${active && !button ? 'font-weight-bold' : ''}`}
             dispatch={props.dispatch}
             key={`mobile-account-menu-action-${i}`} />);
-        })}
+      })}
     </Fragment>
   );
   switch (menu.tag) {
@@ -295,6 +295,7 @@ const Title: View<TitleProps> = ({ title, homeDest, dispatch, color = 'c-nav-fg'
 );
 
 const MobileMenu: View<Props> = props => {
+  const { /* t, */ i18n } = useTranslation();
   const isMobileMenuOpen = props.state.isMobileMenuOpen;
   const { appLinks } = props;
   const linkClassName = (link: NavLink, numLinks: number, i: number) => `${link.active && !link.button ? 'font-weight-bold' : ''} ${i < numLinks - 1 ? 'mb-3' : ''}`;
@@ -308,24 +309,39 @@ const MobileMenu: View<Props> = props => {
         </Row>
         {appLinks.length
           ? (<Row>
-              <Col xs='12'>
-                <div className='pb-4 border-bottom mb-4 d-flex flex-column align-items-start'>
-                  {appLinks.map((link, i) => (
-                    <NavLink
-                      {...link}
-                      focusable={false}
-                      dispatch={props.dispatch}
-                      color='c-nav-fg-alt'
-                      className={linkClassName(link, appLinks.length, i)}
-                      key={`mobile-app-link-${i}`} />
-                  ))}
-                </div>
-              </Col>
-            </Row>)
+            <Col xs='12'>
+              <div className='pb-4 border-bottom mb-4 d-flex flex-column align-items-start'>
+                {appLinks.map((link, i) => (
+                  <NavLink
+                    {...link}
+                    focusable={false}
+                    dispatch={props.dispatch}
+                    color='c-nav-fg-alt'
+                    className={linkClassName(link, appLinks.length, i)}
+                    key={`mobile-app-link-${i}`} />
+                ))}
+              </div>
+            </Col>
+          </Row>)
           : null}
         <Row>
           <Col xs='12'>
             <MobileAccountMenu {...props} />
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12">
+
+            <a href="#" lang="en" id="mobile-toggle-locale"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
+                return false;
+              }}
+            >
+              <span>{i18n.language === 'fr' ? 'English' : 'Français'}</span>
+            </a>
           </Col>
         </Row>
       </Container>
@@ -353,9 +369,9 @@ const TopNavbar: View<Props> = props => {
                   : null}
               </div>
               <div className='d-none d-md-flex align-items-center flex-shrink-0'>
-                <ul className='main-nav-top-navbar-list'>  
+                <ul className='main-nav-top-navbar-list'>
                   <li>
-                    <a href="#" lang="en"
+                    <a href="#" lang="en" id="toggle-locale"
                       onClick={() => {
                         i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
                       }}
@@ -368,14 +384,15 @@ const TopNavbar: View<Props> = props => {
                   </li>
                 </ul>
               </div>
-              <div className='d-md-none'>
+              <div className='d-md-none'
+                id='toggleMobileMenu'
+                onClick={() => dispatch(adt('toggleMobileMenu'))} >
                 <Icon
                   hover
                   width={1.4}
                   height={1.4}
                   name={state.isMobileMenuOpen ? 'times' : 'bars'}
-                  color='c-nav-fg'
-                  onClick={() => dispatch(adt('toggleMobileMenu'))} />
+                  color='c-nav-fg' />
               </div>
             </Col>
           </Row>
