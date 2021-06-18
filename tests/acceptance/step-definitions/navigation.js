@@ -13,14 +13,19 @@ async function goToPage(path, doScreenshot=true){
   return doScreenshot && takeScreenshot.call(this)
 }
 
-Given('my browser language is {string}', async function (locale) {
+/**
+ * Set the website display language
+ * 
+ * TODO: Set browser locale instead of using URL
+ * 
+ * @param {string} locale The language to use (ie: "fr", "en")
+ * @returns {Promise}
+ */
+function setLocale(locale) {
   return goToPage.call(this, `/?lng=${locale}`, false);
-});
+};
 
-Given('I open the page {string}', goToPage.bind(this));
-Given('I open the home page', function(){ return goToPage.bind(this)('') })
-
-When('I click on link with id {string}', async function (domId) {
+async function clickLink(domId){
   var link = await this.driver.findElement(By.id(domId));
   var linkDisplayed = await link.isDisplayed()
   const s = await this.driver.sleep()
@@ -40,4 +45,16 @@ When('I click on link with id {string}', async function (domId) {
     link = await this.driver.findElement(By.id(domId));
     return link.click();
   }
-});
+}
+
+Given('le langage de mon navigateur est {string}', function(lang){ return setLocale.call(this, lang) })
+Given('my browser language is {string}', function(lang){ return setLocale.call(this, lang) });
+
+Given('I open the page {string}', function(pageName){ return goToPage.call(this, pageName) });
+Given('j\'ouvre la page {string}', function(pageName){ return goToPage.bind(this, pageName) });
+
+Given('I open the home page', function(){ return goToPage.call(this, '') })
+Given('j\'ouvre la page d\'accueil', function(){ return goToPage.call(this, '') })
+
+When('je clique sur le lien dont l\'identifiant est {string}', function(domId){ return clickLink.call(this, domId) });
+When('I click on link with id {string}', function(domId){ return clickLink.call(this, domId) });
