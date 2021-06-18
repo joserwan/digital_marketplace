@@ -1,17 +1,26 @@
 const { Given, When } = require('@cucumber/cucumber');
+const { Condition } = require('selenium-webdriver');
 const { By, until } = require('selenium-webdriver');
+const { takeScreenshot } = require('./debug')
+
+async function goToPage(path, doScreenshot=true){
+  await this.driver.get(`http://127.0.0.1:3000/${path}`);
+  await this.driver.wait(until.elementLocated(By.className('footer-top-bar')));
+  await this.driver.wait(new Condition('StateManager is ready', async function(driver){ 
+    const isReady = await driver.executeScript('const state = stateManager.getState(); return state.ready && state.transitionLoading === 0;')
+    return isReady
+  }) );
+  return doScreenshot && takeScreenshot.call(this)
+}
 
 Given('my browser language is {string}', async function (locale) {
-  await this.driver.get(`http://127.0.0.1:3000/?lng=${locale}`);
+  return goToPage.call(this, `/?lng=${locale}`, false);
 });
 
-Given('I open the page {string}', async function (path) {
-  await this.driver.get(`http://127.0.0.1:3000/${path}`);
-  await this.driver.wait(until.elementLocated(By.id('main')));
-});
+Given('I open the page {string}', goToPage.bind(this));
+Given('I open the home page', function(){ return goToPage.bind(this)('') })
 
 When('I click on link with id {string}', async function (domId) {
-  const source = await this.driver.getPageSource()
   var link = await this.driver.findElement(By.id(domId));
   var linkDisplayed = await link.isDisplayed()
   const s = await this.driver.sleep()

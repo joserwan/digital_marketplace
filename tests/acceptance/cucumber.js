@@ -1,7 +1,9 @@
 // cucumber.js
 let common = [
   '--format ../../node_modules/@cucumber/pretty-formatter', // Load custom formatter
-  '--publish-quiet'
+  //'--format html', // Load custom formatter
+  '--publish-quiet',
+  '-f json:cucumber_report.json'
 ].join(' ');
 
 module.exports = {
