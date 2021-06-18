@@ -6,14 +6,14 @@ I want to display the website in my language
 Scenario: Switch locale from "<locale>" to "<newLocale>"
     Given my browser language is "<locale>"
       And I open the home page
-    When I click on link with id 'toggle-locale'
+    When I click on link '<newLocaleLabel>'
     Then I should see "<signInLabel>"
 
     Examples:
-      | locale | newLocale | signInLabel |
-      | fr     | en        | Collaborate |
-      | en     | fr        | Collaborez  |
-      | xyz    | fr        | Collaborez  |
+      | locale | newLocale | newLocaleLabel | signInLabel |
+      | fr     | en        | English        | Collaborate |
+      | en     | fr        | Français       | Collaborez  |
+      | xyz    | fr        | Français       | Collaborez  |
 
 Scenario: Display the website with language "<locale>"
     Given my browser language is "<locale>"

@@ -25,17 +25,22 @@ function setLocale(locale) {
   return goToPage.call(this, `/?lng=${locale}`, false);
 };
 
+/**
+ * Find and click on the DOM element
+ * 
+ * @param {string} domId DOM element ID
+ * @returns {Promise}
+ */
 async function clickLink(domId){
   var link = await this.driver.findElement(By.id(domId));
   var linkDisplayed = await link.isDisplayed()
-  const s = await this.driver.sleep()
   // Menu links are displayed only if screen is big enough, 
   // otherwise it may be in the mobile-menu
   if(linkDisplayed){
     return link.click();
   } else {
     // Open menu
-    var mobileMenuLink = await this.driver.findElement(By.id('toggleMobileMenu'));
+    var mobileMenuLink = await this.driver.findElement(By.id(domId));
     mobileMenuLink.click();
 
     // Wait for menu to be open
@@ -45,6 +50,11 @@ async function clickLink(domId){
     link = await this.driver.findElement(By.id(domId));
     return link.click();
   }
+}
+
+async function clickLinkByLabel(label){
+  const link = await this.driver.findElement(By.linkText(label));
+  return link.click();
 }
 
 Given('le langage de mon navigateur est {string}', function(lang){ return setLocale.call(this, lang) })
@@ -58,3 +68,6 @@ Given('j\'ouvre la page d\'accueil', function(){ return goToPage.call(this, '') 
 
 When('je clique sur le lien dont l\'identifiant est {string}', function(domId){ return clickLink.call(this, domId) });
 When('I click on link with id {string}', function(domId){ return clickLink.call(this, domId) });
+
+When('je clique sur le lien {string}', function(label){ return clickLinkByLabel.call(this, label) });
+When('I click on link {string}', function(label){ return clickLinkByLabel.call(this, label) });
