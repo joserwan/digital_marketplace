@@ -295,17 +295,6 @@ const Title: View<TitleProps> = ({ title, homeDest, dispatch, color = 'c-nav-fg'
 );
 
 const MobileMenu: View<Props> = props => {
-  const { /* t, */ i18n } = useTranslation();
-  <a href="#" lang="en" id="mobile-toggle-locale"
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
-      return false;
-    }}
-  >
-    <span>{i18n.language === 'fr' ? 'English' : 'Français'}</span>
-  </a>
   const isMobileMenuOpen = props.state.isMobileMenuOpen;
   const { appLinks } = props;
   const linkClassName = (link: NavLink, numLinks: number, i: number) => `${link.active && !link.button ? 'font-weight-bold' : ''} ${i < numLinks - 1 ? 'mb-3' : ''}`;
@@ -366,7 +355,7 @@ const TopNavbar: View<Props> = props => {
               <div className='d-none d-md-flex align-items-center flex-shrink-0'>
                 <ul className='main-nav-top-navbar-list'>
                   <li>
-                    <a href="#" lang="en" id="toggle-locale"
+                    <a href="#"
                       onClick={() => {
                         i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
                       }}
@@ -379,22 +368,21 @@ const TopNavbar: View<Props> = props => {
                   </li>
                 </ul>
               </div>
-              <a className='d-md-none mr-3' href="#" lang="en" id="toggle-locale"
+              <a className='d-md-none mr-3' href="#"
                 onClick={() => {
                   i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
                 }}
               >
                 <span>{i18n.language === 'fr' ? 'English' : 'Français'}</span>
               </a>
-              <div className='d-md-none'
-                id='toggleMobileMenu'
-                onClick={() => dispatch(adt('toggleMobileMenu'))} >
+              <div className='d-md-none'>
                 <Icon
                   hover
                   width={1.4}
                   height={1.4}
                   name={state.isMobileMenuOpen ? 'times' : 'bars'}
-                  color='c-nav-fg' />
+                  color='c-nav-fg'
+                  onClick={() => dispatch(adt('toggleMobileMenu'))} />
               </div>
             </Col>
           </Row>
