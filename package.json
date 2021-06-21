@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run back-end:start",
     "watch": "npm run back-end:watch",
-    "acceptance": "cd tests/acceptance && npx cucumber-js; node generate_report.js; cd ../..",
+    "acceptance": "cd tests/acceptance && rm -f screenshots/* && npx cucumber-js; node generate_report.js; cd ../..",
     "acceptance:fr": "LOCALE=fr  npm run acceptance",
     "acceptance:mobile": "MOBILE=1 npm run acceptance",
     "front-end:lint": "npx tslint -c tslint.json src/front-end/*.ts src/front-end/**/*.ts && echo Lint Successful\n",
