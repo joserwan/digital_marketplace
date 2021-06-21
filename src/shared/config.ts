@@ -14,6 +14,8 @@ export const GOV_IDP_SUFFIX = 'idir';
 
 export const GOV_IDP_NAME = 'IDIR';
 
+export const GITHUB_ENABLED = !!process.env.GITHUBID;
+
 export const VENDOR_IDP_SUFFIX = 'github';
 
 export const VENDOR_IDP_NAME = 'GitHub';

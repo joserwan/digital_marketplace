@@ -13,11 +13,10 @@ Plan du scénario: Passer la langue de "<locale>" à "<newLocale>"
       | locale | newLocale | newLocaleLabel | signInLabel |
       | fr     | en        | English        | Collaborate |
       | en     | fr        | Français       | Collaborez  |
-      | xyz    | fr        | Français       | Collaborez  |
 
     Exemples: Langues non reconnues
       | locale | newLocale | newLocaleLabel | signInLabel |
-      | xyz    | fr        | Français       | Collaborez  |
+      | xyz    | en        | English        | Collaborate |
 
 Scénario: Afficher le site dans la langue "<locale>"
     Sachant que le langage de mon navigateur est "<locale>"
@@ -28,4 +27,4 @@ Scénario: Afficher le site dans la langue "<locale>"
       | locale | signInLabel |
       | fr     | Collaborez  |
       | en     | Collaborate |
-      | xyz    | Collaborate |
+      | xyz    | Collaborez  |

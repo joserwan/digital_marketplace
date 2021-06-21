@@ -7,7 +7,7 @@ import makeInstructionalSidebar from 'front-end/lib/views/sidebar/instructional'
 import { SignInCard } from 'front-end/lib/views/sign-in-card';
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import { GOV_IDP_NAME, VENDOR_IDP_NAME } from 'shared/config';
+import { GOV_IDP_NAME, VENDOR_IDP_NAME, GITHUB_ENABLED } from 'shared/config';
 import { UserType } from 'shared/lib/resources/user';
 import { ADT, adt } from 'shared/lib/types';
 import { invalid, valid, Validation } from 'shared/lib/validation';
@@ -48,12 +48,12 @@ const view: ComponentView<State, Msg> = viewValid(({ state }) => {
           <p>Select one of the options available below to sign in to your Digital Marketplace account.</p>
         </Col>
       </Row>
-      <SignInCard
+      {GITHUB_ENABLED && <SignInCard
         userType={UserType.Vendor}
         title='Vendor'
         description={`Use your ${VENDOR_IDP_NAME} account to sign in to the Digital Marketplace.`}
         redirectOnSuccess={state.redirectOnSuccess}
-        buttonText={`Sign In Using ${VENDOR_IDP_NAME}`} />
+        buttonText={`Sign In Using ${VENDOR_IDP_NAME}`} />}
       <SignInCard
         userType={UserType.Government}
         redirectOnSuccess={state.redirectOnSuccess}

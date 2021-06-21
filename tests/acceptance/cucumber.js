@@ -4,7 +4,7 @@ let common = [
   //'--format html', // Load custom formatter
   '--publish-quiet',
   '--require step-definitions/**/*.js',
-  '-f json:cucumber_report.json'
+  '-f json:cucumber_report.json',
 ];
 
 
@@ -15,6 +15,9 @@ if(process.env['LOCALE'] === 'fr'){
   common.push('features/**/*.feature')
 }
 
+if(process.env['TAGS']){
+  common.push(`--tags ${process.env['TAGS']}`)
+}
 
 console.log(common.join(' '))
 

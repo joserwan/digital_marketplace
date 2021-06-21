@@ -65,9 +65,14 @@ Given('j\'ouvre la page {string}', function(pageName){ return goToPage.bind(this
 
 Given('I open the home page', function(){ return goToPage.call(this, '') })
 Given('j\'ouvre la page d\'accueil', function(){ return goToPage.call(this, '') })
+Given('je suis sur la page d\'accueil', function(){ return goToPage.call(this, '') })
 
 When('je clique sur le lien dont l\'identifiant est {string}', function(domId){ return clickLink.call(this, domId) });
 When('I click on link with id {string}', function(domId){ return clickLink.call(this, domId) });
 
 When('je clique sur le lien {string}', function(label){ return clickLinkByLabel.call(this, label) });
 When('I click on link {string}', function(label){ return clickLinkByLabel.call(this, label) });
+
+module.exports = {
+  setLocale,
+}
