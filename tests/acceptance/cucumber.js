@@ -1,8 +1,9 @@
 const process = require('process')
 let common = [
   '--format ../../node_modules/@cucumber/pretty-formatter', // Load custom formatter
-  //'--format html', // Load custom formatter
+  '--format html:cucumber_report_simple.html', // Load custom formatter
   '--publish-quiet',
+  '--require ../../../../src/back-end/start.js',
   '--require step-definitions/**/*.js',
   '-f json:cucumber_report.json',
 ];
@@ -18,8 +19,6 @@ if(process.env['LOCALE'] === 'fr'){
 if(process.env['TAGS']){
   common.push(`--tags ${process.env['TAGS']}`)
 }
-
-console.log(common.join(' '))
 
 module.exports = {
   default: common.join(' ')

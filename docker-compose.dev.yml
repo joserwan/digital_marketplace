@@ -2,7 +2,6 @@ version: "3"
 services:
   db:
     image: postgres:10
-    restart: always
     ports:
       - 5432:5432
     environment:
@@ -31,7 +30,6 @@ services:
     build: 
       context: .
       target: development
-    restart: always
     ports:
       - 3000:3000
       - 5000:5000 # Doc
@@ -71,6 +69,7 @@ services:
       - SERVICE_TOKEN_HASH=
       - SHOW_TEST_INDICATOR=true
       - SWAGGER_ENABLE=true
+      - VENDOR_ACCOUNT_CREATION_DISABLED=1
 
   selenium:
     image: selenium/standalone-chrome-debug

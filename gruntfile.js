@@ -5,6 +5,7 @@ const prefix = a => b => `/${a ? deslash(a) + '/' : ''}${deslash(b)}`;
 const NODE_ENV = process.env.NODE_ENV === "development" ? "development" : "production";
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "digitalmarketplace@gov.bc.ca";
 const PATH_PREFIX = process.env.PATH_PREFIX || "";
+const VENDOR_ACCOUNT_CREATION_DISABLED = process.env.VENDOR_ACCOUNT_CREATION_DISABLED
 const SHOW_TEST_INDICATOR = process.env.SHOW_TEST_INDICATOR || "";
 const srcFrontEnd = path.resolve(__dirname, "./src/front-end");
 const srcBackEnd = path.resolve(__dirname, "./src/back-end");
@@ -38,7 +39,8 @@ global.gruntConfig = {
       NODE_ENV,
       CONTACT_EMAIL,
       PATH_PREFIX,
-      SHOW_TEST_INDICATOR
+      SHOW_TEST_INDICATOR,
+      VENDOR_ACCOUNT_CREATION_DISABLED,
     }
   },
   backEnd: {

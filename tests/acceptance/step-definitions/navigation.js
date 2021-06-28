@@ -1,7 +1,6 @@
-const { Given, When } = require('@cucumber/cucumber');
-const { Condition } = require('selenium-webdriver');
-const { By, until } = require('selenium-webdriver');
-const { takeScreenshot } = require('./debug')
+const { Given, When, Then } = require('@cucumber/cucumber');
+const { Condition, By, until } = require('selenium-webdriver');
+const { takeScreenshot, highlightElement, highlightElementAndScreenshot } = require('./debug')
 
 async function goToPage(path, doScreenshot=true){
   await this.driver.get(`http://127.0.0.1:3000/${path}`);
@@ -32,28 +31,14 @@ function setLocale(locale) {
  * @returns {Promise}
  */
 async function clickLink(domId){
-  var link = await this.driver.findElement(By.id(domId));
-  var linkDisplayed = await link.isDisplayed()
-  // Menu links are displayed only if screen is big enough, 
-  // otherwise it may be in the mobile-menu
-  if(linkDisplayed){
-    return link.click();
-  } else {
-    // Open menu
-    var mobileMenuLink = await this.driver.findElement(By.id(domId));
-    mobileMenuLink.click();
-
-    // Wait for menu to be open
-    await this.driver.wait(until.elementIsVisible(link));
-
-
-    link = await this.driver.findElement(By.id(domId));
-    return link.click();
-  }
+  const link = await this.driver.findElement(By.id(domId));
+  await highlightElementAndScreenshot.call(this, link)
+  return link.click();
 }
 
 async function clickLinkByLabel(label){
   const link = await this.driver.findElement(By.linkText(label));
+  await highlightElementAndScreenshot.call(this, link)
   return link.click();
 }
 
@@ -61,7 +46,7 @@ Given('le langage de mon navigateur est {string}', function(lang){ return setLoc
 Given('my browser language is {string}', function(lang){ return setLocale.call(this, lang) });
 
 Given('I open the page {string}', function(pageName){ return goToPage.call(this, pageName) });
-Given('j\'ouvre la page {string}', function(pageName){ return goToPage.bind(this, pageName) });
+Given('j\'ouvre la page {string}', function(pageName){ return goToPage.call(this, pageName) });
 
 Given('I open the home page', function(){ return goToPage.call(this, '') })
 Given('j\'ouvre la page d\'accueil', function(){ return goToPage.call(this, '') })
@@ -70,8 +55,17 @@ Given('je suis sur la page d\'accueil', function(){ return goToPage.call(this, '
 When('je clique sur le lien dont l\'identifiant est {string}', function(domId){ return clickLink.call(this, domId) });
 When('I click on link with id {string}', function(domId){ return clickLink.call(this, domId) });
 
+When('je clique sur le bouton {string}', function(domId){ return clickLink.call(this, domId) });
+
+
 When('je clique sur le lien {string}', function(label){ return clickLinkByLabel.call(this, label) });
 When('I click on link {string}', function(label){ return clickLinkByLabel.call(this, label) });
+
+Then('j\'ai une erreur {string}', function (string) {
+  // Write code here that turns the phrase above into concrete actions
+  return 'pending';
+});
+
 
 module.exports = {
   setLocale,

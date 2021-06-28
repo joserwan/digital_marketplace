@@ -6,8 +6,9 @@ import Link, { routeDest } from 'front-end/lib/views/link';
 import makeInstructionalSidebar from 'front-end/lib/views/sidebar/instructional';
 import { SignInCard } from 'front-end/lib/views/sign-in-card';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Col, Row } from 'reactstrap';
-import { GOV_IDP_NAME, VENDOR_IDP_NAME, GITHUB_ENABLED } from 'shared/config';
+import { GOV_IDP_NAME, VENDOR_IDP_NAME, GITHUB_ENABLED, PROVINCIAL_IDP_ENABLED, PROVINCIAL_IDP_NAME } from 'shared/config';
 import { UserType } from 'shared/lib/resources/user';
 import { ADT, adt } from 'shared/lib/types';
 import { invalid, valid, Validation } from 'shared/lib/validation';
@@ -40,6 +41,7 @@ const update: Update<State, Msg> = ({ state, msg }) => {
 };
 
 const view: ComponentView<State, Msg> = viewValid(({ state }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <Row className='pb-4'>
@@ -54,12 +56,20 @@ const view: ComponentView<State, Msg> = viewValid(({ state }) => {
         description={`Use your ${VENDOR_IDP_NAME} account to sign in to the Digital Marketplace.`}
         redirectOnSuccess={state.redirectOnSuccess}
         buttonText={`Sign In Using ${VENDOR_IDP_NAME}`} />}
+
+
+      {PROVINCIAL_IDP_ENABLED && <SignInCard title={t('account.type.vendor')}
+        description={t('account.sign-in.description', {accountType: PROVINCIAL_IDP_NAME})}
+        buttonText={t('account.sign-in.button', {accountType: PROVINCIAL_IDP_NAME})}
+        redirectOnSuccess={state.redirectOnSuccess}
+        userType={UserType.Vendor}
+      />}
       <SignInCard
         userType={UserType.Government}
         redirectOnSuccess={state.redirectOnSuccess}
         title='Public Sector Employee'
-        description={`Use your ${GOV_IDP_NAME} to sign in to the Digital Marketplace.`}
-        buttonText={`Sign In Using ${GOV_IDP_NAME}`} />
+        description={t('account.sign-in.description', {accountType: GOV_IDP_NAME})}
+        buttonText={t('account.sign-in.button', {accountType: GOV_IDP_NAME})} />
     </div>
   );
 });

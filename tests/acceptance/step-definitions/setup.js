@@ -1,4 +1,4 @@
-const { After, Before } = require('@cucumber/cucumber');
+const { After, Before, BeforeAll } = require('@cucumber/cucumber');
 const { Builder, Capabilities } = require('selenium-webdriver');
 const process = require('process')
 const { setLocale } = require('./navigation')
@@ -11,18 +11,25 @@ const MOBILE_SCREEN = {
   height: 640
 }
 
+/**
+ * Minimum computer screen size
+ */
+const COMPUTER_SCREEN = { 
+  width: 1280, 
+  height: 720
+}
+
 
 var chromeCapabilities = Capabilities.chrome();
-//setting chrome options to start the browser fully maximized
 var chromeOptions = {
     'args': [
       'disable-gpu', 
       'start-maximized',
       'high-dpi-support=0.65',
+      'incognito',
       'force-device-scale-factor=0.65',
- //     'headless',
+    //  'headless',
       'disable-dev-shm-usage',
-      'window-size=1920x1080',
       'disable-notifications',
     ]
 };
@@ -40,7 +47,9 @@ Before(async function(){
       .withCapabilities(chromeCapabilities)
       .build()
   // Set little screen size if mobile
-  if(process.env['MOBILE']){ await this.driver.manage().window().setRect(MOBILE_SCREEN); }
+  await this.driver.manage().window().setRect(process.env['MOBILE']
+  ? MOBILE_SCREEN
+  : COMPUTER_SCREEN);
 
   // Set locale
   if(process.env['LOCALE']){ await setLocale.call(this, process.env['LOCALE']); }

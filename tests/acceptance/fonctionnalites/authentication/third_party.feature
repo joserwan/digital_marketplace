@@ -1,4 +1,3 @@
-@fr
 Fonctionnalité: Authentification tierce-partie
 
 En tant pilote
@@ -9,10 +8,4 @@ Scénario: Désactiver l'authentification avec Github
   Sachant que l'authentification "Github" est désactivée
     Et que je suis sur la page d'accueil
   Lorsque je clique sur le lien "Connexion"
-  Alors je ne vois pas "GitHub"
-
-Scénario: Désactiver la création de compate avec Github
-  Sachant que l'authentification "Github" est désactivée
-    Et que je suis sur la page d'accueil
-  Lorsque je clique sur le lien "Créer un compte"
   Alors je ne vois pas "GitHub"

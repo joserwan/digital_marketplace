@@ -1,3 +1,4 @@
+import { VENDOR_ACCOUNT_CREATION_DISABLED } from 'shared/config';
 import { prefixPath } from 'front-end/lib';
 import { Route } from 'front-end/lib/app/types';
 import * as Router from 'front-end/lib/framework/router';
@@ -403,6 +404,9 @@ const router: Router.Router<Route> = {
     {
       path: prefixPath('/sign-up'),
       makeRoute({ query }) {
+        if(VENDOR_ACCOUNT_CREATION_DISABLED){
+          return adt('notFound', { query }) as Route;
+        }
         return {
           tag: 'signUpStepOne',
           value: { redirectOnSuccess: getString(query, 'redirectOnSuccess') || undefined }
@@ -412,6 +416,9 @@ const router: Router.Router<Route> = {
     {
       path: prefixPath('/sign-up/complete'),
       makeRoute() {
+        if(VENDOR_ACCOUNT_CREATION_DISABLED){
+          return adt('notFound', {}) as Route;
+        }
         return {
           tag: 'signUpStepTwo',
           value: null

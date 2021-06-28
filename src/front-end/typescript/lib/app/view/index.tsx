@@ -52,7 +52,7 @@ import Link, { externalDest, iconLinkSymbol, imageLinkSymbol, leftPlacement, rig
 import { compact } from 'lodash';
 import { default as React } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, Toast, ToastBody } from 'reactstrap';
-import { SHOW_TEST_INDICATOR } from 'shared/config';
+import { SHOW_TEST_INDICATOR, VENDOR_ACCOUNT_CREATION_DISABLED } from 'shared/config';
 import { hasAcceptedTermsOrIsAnonymous } from 'shared/lib/resources/session';
 import { UserType } from 'shared/lib/resources/user';
 import { ADT, adt, adtCurried } from 'shared/lib/types';
@@ -485,23 +485,27 @@ const ViewToasts: ComponentView<State, Msg> = ({ state, dispatch }) => {
 };
 
 const navUnauthenticatedMenu = () => {
-  
   const { t } = useTranslation();
-  return Nav.unauthenticatedAccountMenu([
-  Nav.linkAccountAction({
-    children: t('links.sign-in'),
-    button: true,
-    outline: true,
-    color: 'primary',
-    dest: routeDest(adt('signIn', {}))
-  }),
-  Nav.linkAccountAction({
-    children: t('links.sign-up'),
-    button: true,
-    color: 'primary',
-    dest: routeDest(adt('signUpStepOne', {}))
-  })
-])
+  const navLinks = [
+    Nav.linkAccountAction({
+      children: t('links.sign-in'),
+      button: true,
+      outline: true,
+      color: 'primary',
+      dest: routeDest(adt('signIn', {}))
+    }),
+  ]
+
+  if(!VENDOR_ACCOUNT_CREATION_DISABLED){
+    navLinks.push(
+      Nav.linkAccountAction({
+        children: t('links.sign-up'),
+        button: true,
+        color: 'primary',
+        dest: routeDest(adt('signUpStepOne', {}))
+      }))
+  }
+  return Nav.unauthenticatedAccountMenu(navLinks)
 };
 
 const signOutLink: Nav.NavLink = {
