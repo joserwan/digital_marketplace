@@ -24,7 +24,7 @@ async function takeScreenshot (filename) {
  * @param {WebElement} webElement The element to highlight
  */
 async function highlightElement (webElement) {
-  await this.driver.executeScript("arguments[0].setAttribute('style','border: dashed 4px red');", webElement);
+  await this.driver.executeScript("arguments[0].setAttribute('style','border: dashed 4px red; background-color: yellow; color: black');", webElement);
   await this.driver.sleep(100) // Let new style the time to be applied
 };
 
