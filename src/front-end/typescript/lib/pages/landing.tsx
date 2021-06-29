@@ -58,7 +58,7 @@ const Hero: ComponentView<State, Msg> = ({state, dispatch}) => {
             button
             outline
             symbol_={rightPlacement(iconLinkSymbol('arrow-right'))}
-            dest={routeDest(adt('content', 'about'))}
+            dest={routeDest(adt('contentView', 'about'))}
             color='primary'
             className='mr-3'>
              {t('links.about')}

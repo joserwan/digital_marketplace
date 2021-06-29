@@ -9,9 +9,9 @@ import { parseBooleanEnvironmentVariable } from 'shared/config';
 
 // HARDCODED CONFIG
 // Offset for total opportunity metrics displayed on landing page
-export const TOTAL_AWARDED_COUNT_OFFSET = 62;
+export const TOTAL_AWARDED_COUNT_OFFSET = 94;
 
-export const TOTAL_AWARDED_VALUE_OFFSET = 13782000;
+export const TOTAL_AWARDED_VALUE_OFFSET = 13211500;
 
 export const DB_MIGRATIONS_TABLE_NAME = 'migrations';
 
@@ -104,8 +104,7 @@ const productionMailerConfigOptions = {
   maxConnections: parseInt(get('MAILER_MAX_CONNECTIONS', '5'), 10)
 };
 
-/*
-const developmentMailerConfigOptions = {
+const developmentGmailMailerConfigOptions = {
   service: 'gmail',
   auth: {
     user: get('MAILER_GMAIL_USER', ''),
@@ -117,13 +116,16 @@ const developmentMailerConfigOptions = {
   pool: true,
   maxConnections: parseInt(get('MAILER_MAX_CONNECTIONS', '5'), 10)
 };
-*/
 
-const developmentMailerConfigOptions: SendmailTransport.Options = {
+const developmentSendmailMailerConfigOptions: SendmailTransport.Options = {
   sendmail: true,
   path: '/usr/sbin/sendmail',
   newline: 'unix'
 };
+
+const developmentMailerConfigOptions = get('MAILER_GMAIL_USER', '')
+? developmentGmailMailerConfigOptions
+: developmentSendmailMailerConfigOptions
 
 export const MAILER_CONFIG = ENV === 'development' ? developmentMailerConfigOptions : productionMailerConfigOptions;
 

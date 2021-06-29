@@ -5,7 +5,7 @@ module.exports = {
   prefix: {
     options: {
       processors: [
-        autoprefixer({ browsers: "last 2 versions" })
+        autoprefixer()
       ]
     },
     src: gruntConfig.frontEnd.build.css

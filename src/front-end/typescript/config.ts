@@ -14,9 +14,9 @@ export const SOURCE_CODE_URL = 'https://github.com/bcgov/digital_marketplace/';
 
 export const DEFAULT_LOCATION = 'Victoria';
 
-export const FORM_FIELD_DEBOUNCE_DURATION = 500;
+export const FORM_FIELD_DEBOUNCE_DURATION = 500; //ms
 
-export const SEARCH_DEBOUNCE_DURATION = 200;
+export const SEARCH_DEBOUNCE_DURATION = 200; //ms
 
 export const PROCUREMENT_CONCIERGE_URL = 'https://procurementconcierge.gov.bc.ca';
 
@@ -29,6 +29,8 @@ export const TRANSITION_DURATION = 240; //ms
 export const DROPDOWN_CARET_SIZE = 0.8; //rem
 
 export const TOAST_AUTO_DISMISS_DURATION = 20000; //ms
+
+export const APP_TERMS_CONTENT_ID = 'terms-and-conditions';
 
 export const SWU_PROPOSAL_EVALUATION_CONTENT_ID = 'sprint-with-us-proposal-evaluation';
 

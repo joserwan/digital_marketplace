@@ -7,10 +7,11 @@ import makeInstructionalSidebar from 'front-end/lib/views/sidebar/instructional'
 import { SignInCard } from 'front-end/lib/views/sign-in-card';
 import React from 'react';
 import { Col, Row } from 'reactstrap';
-import { GOV_IDP_NAME, VENDOR_IDP_NAME } from 'shared/config';
+import { GITHUB_ENABLED, PROVINCIAL_IDP_NAME, PROVINCIAL_IDP_ENABLED, GOV_IDP_NAME, VENDOR_IDP_NAME, VENDOR_ACCOUNT_CREATION_DISABLED } from 'shared/config';
 import { UserType } from 'shared/lib/resources/user';
 import { ADT, adt } from 'shared/lib/types';
 import { invalid, valid, Validation } from 'shared/lib/validation';
+import { useTranslation } from 'react-i18next';
 
 interface ValidState {
   redirectOnSuccess?: string;
@@ -40,21 +41,32 @@ const update: Update<State, Msg> = ({ state, msg }) => {
 };
 
 const view: ComponentView<State, Msg> = viewValid(({ state }) => {
+  if(VENDOR_ACCOUNT_CREATION_DISABLED){
+    throw new Error('Unauthorized')
+  }
+  const { t } = useTranslation();
   return (
     <div>
       <Row className='pb-4'>
         <Col xs='12' className='mx-auto'>
-          <h2>Choose Account Type</h2>
-          <p>Choose the account type that describes you best. Access to certain features of the app will be based on the account type that you select.</p>
+          <h2>{t('account.type.select.title')}</h2>
+          <p>{t('account.type.select.description')}</p>
         </Col>
       </Row>
 
-      <SignInCard title='Vendor'
+      {GITHUB_ENABLED && <SignInCard title='Vendor'
         description={`Vendors will be required to have a ${VENDOR_IDP_NAME} account to sign up for the Digital Marketplace. Don’t have an account? Creating one only takes a minute.`}
         buttonText={`Sign Up Using ${VENDOR_IDP_NAME}`}
         redirectOnSuccess={state.redirectOnSuccess}
         userType={UserType.Vendor}
-      />
+      />}
+
+      {PROVINCIAL_IDP_ENABLED && <SignInCard title={t('account.type.vendor')}
+        description={t('account.sign-up.description', {accountType: PROVINCIAL_IDP_NAME})}
+        buttonText={t('account.sign-up.button', {accountType: PROVINCIAL_IDP_NAME})}
+        redirectOnSuccess={state.redirectOnSuccess}
+        userType={UserType.Vendor}
+      />}
 
       <SignInCard title='Public Sector Employee'
         description={`Public sector employees will be required to use their ${GOV_IDP_NAME} to sign up for the Digital Marketplace.`}

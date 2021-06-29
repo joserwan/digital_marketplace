@@ -221,7 +221,7 @@ const DesktopAccountMenu: View<Props> = props => {
               dispatch={dispatch}
               color='c-nav-fg'
               key={`desktop-account-menu-action-${i}`} />
-            ))}
+          ))}
         </Fragment>
       );
     case 'authenticated':
@@ -254,7 +254,7 @@ const MobileAccountMenu: View<Props> = props => {
             className={`${i !== arr.length - 1 ? marginClassName : ''} ${active && !button ? 'font-weight-bold' : ''}`}
             dispatch={props.dispatch}
             key={`mobile-account-menu-action-${i}`} />);
-        })}
+      })}
     </Fragment>
   );
   switch (menu.tag) {
@@ -308,20 +308,20 @@ const MobileMenu: View<Props> = props => {
         </Row>
         {appLinks.length
           ? (<Row>
-              <Col xs='12'>
-                <div className='pb-4 border-bottom mb-4 d-flex flex-column align-items-start'>
-                  {appLinks.map((link, i) => (
-                    <NavLink
-                      {...link}
-                      focusable={false}
-                      dispatch={props.dispatch}
-                      color='c-nav-fg-alt'
-                      className={linkClassName(link, appLinks.length, i)}
-                      key={`mobile-app-link-${i}`} />
-                  ))}
-                </div>
-              </Col>
-            </Row>)
+            <Col xs='12'>
+              <div className='pb-4 border-bottom mb-4 d-flex flex-column align-items-start'>
+                {appLinks.map((link, i) => (
+                  <NavLink
+                    {...link}
+                    focusable={false}
+                    dispatch={props.dispatch}
+                    color='c-nav-fg-alt'
+                    className={linkClassName(link, appLinks.length, i)}
+                    key={`mobile-app-link-${i}`} />
+                ))}
+              </div>
+            </Col>
+          </Row>)
           : null}
         <Row>
           <Col xs='12'>
@@ -353,11 +353,10 @@ const TopNavbar: View<Props> = props => {
                   : null}
               </div>
               <div className='d-none d-md-flex align-items-center flex-shrink-0'>
-                <ul className='main-nav-top-navbar-list'>  
+                <ul className='main-nav-top-navbar-list'>
                   <li>
-                    <a href="#" lang="en"
+                    <a href="#"
                       onClick={() => {
-                        console.log(i18n);
                         i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
                       }}
                     >
@@ -369,6 +368,13 @@ const TopNavbar: View<Props> = props => {
                   </li>
                 </ul>
               </div>
+              <a className='d-md-none mr-3' href="#"
+                onClick={() => {
+                  i18n.changeLanguage(i18n.language === 'fr' ? 'en' : 'fr');
+                }}
+              >
+                <span>{i18n.language === 'fr' ? 'English' : 'Français'}</span>
+              </a>
               <div className='d-md-none'>
                 <Icon
                   hover

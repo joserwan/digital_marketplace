@@ -123,6 +123,7 @@ interface Props {
   hover?: boolean;
   width?: number | 'auto';
   height?: number | 'auto';
+  id?: string;
   className?: string;
   style?: CSSProperties;
   onClick?: MouseEventHandler<SVGSVGElement>;

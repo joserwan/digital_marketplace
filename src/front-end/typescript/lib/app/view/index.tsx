@@ -6,7 +6,10 @@ import Footer from 'front-end/lib/app/view/footer';
 import * as Nav from 'front-end/lib/app/view/nav';
 import ViewPage, { Props as ViewPageProps } from 'front-end/lib/app/view/page';
 import { AppMsg, ComponentView, ComponentViewProps, Dispatch, Immutable, mapAppDispatch, mapComponentDispatch, mapPageModalMsg, PageModal, Toast as FrameworkToast, View } from 'front-end/lib/framework';
-import * as PageContent from 'front-end/lib/pages/content';
+import * as PageContentCreate from 'front-end/lib/pages/content/create';
+import * as PageContentEdit from 'front-end/lib/pages/content/edit';
+import * as PageContentList from 'front-end/lib/pages/content/list';
+import * as PageContentView from 'front-end/lib/pages/content/view';
 import * as PageDashboard from 'front-end/lib/pages/dashboard';
 import * as PageLanding from 'front-end/lib/pages/landing';
 import * as PageLearnMoreCWU from 'front-end/lib/pages/learn-more/code-with-us';
@@ -49,7 +52,7 @@ import Link, { externalDest, iconLinkSymbol, imageLinkSymbol, leftPlacement, rig
 import { compact } from 'lodash';
 import { default as React } from 'react';
 import { Modal, ModalBody, ModalFooter, ModalHeader, Toast, ToastBody } from 'reactstrap';
-import { SHOW_TEST_INDICATOR } from 'shared/config';
+import { SHOW_TEST_INDICATOR, VENDOR_ACCOUNT_CREATION_DISABLED } from 'shared/config';
 import { hasAcceptedTermsOrIsAnonymous } from 'shared/lib/resources/session';
 import { UserType } from 'shared/lib/resources/user';
 import { ADT, adt, adtCurried } from 'shared/lib/types';
@@ -122,12 +125,36 @@ function pageToViewPageProps(props: ComponentViewProps<State, Msg>): ViewPagePro
         value => ({ tag: 'pageLearnMoreSWU', value })
       );
 
-    case 'content':
+    case 'contentView':
       return makeViewPageProps(
         props,
-        PageContent.component,
-        state => state.pages.content,
-        value => ({ tag: 'pageContent', value })
+        PageContentView.component,
+        state => state.pages.contentView,
+        value => ({ tag: 'pageContentView', value })
+      );
+
+    case 'contentEdit':
+      return makeViewPageProps(
+        props,
+        PageContentEdit.component,
+        state => state.pages.contentEdit,
+        value => ({ tag: 'pageContentEdit', value })
+      );
+
+    case 'contentList':
+      return makeViewPageProps(
+        props,
+        PageContentList.component,
+        state => state.pages.contentList,
+        value => ({ tag: 'pageContentList', value })
+      );
+
+    case 'contentCreate':
+      return makeViewPageProps(
+        props,
+        PageContentCreate.component,
+        state => state.pages.contentCreate,
+        value => ({ tag: 'pageContentCreate', value })
       );
 
     case 'orgEdit':
@@ -458,23 +485,27 @@ const ViewToasts: ComponentView<State, Msg> = ({ state, dispatch }) => {
 };
 
 const navUnauthenticatedMenu = () => {
-  
   const { t } = useTranslation();
-  return Nav.unauthenticatedAccountMenu([
-  Nav.linkAccountAction({
-    children: t('links.sign-in'),
-    button: true,
-    outline: true,
-    color: 'primary',
-    dest: routeDest(adt('signIn', {}))
-  }),
-  Nav.linkAccountAction({
-    children: t('links.sign-up'),
-    button: true,
-    color: 'primary',
-    dest: routeDest(adt('signUpStepOne', {}))
-  })
-])
+  const navLinks = [
+    Nav.linkAccountAction({
+      children: t('links.sign-in'),
+      button: true,
+      outline: true,
+      color: 'primary',
+      dest: routeDest(adt('signIn', {}))
+    }),
+  ]
+
+  if(!VENDOR_ACCOUNT_CREATION_DISABLED){
+    navLinks.push(
+      Nav.linkAccountAction({
+        children: t('links.sign-up'),
+        button: true,
+        color: 'primary',
+        dest: routeDest(adt('signUpStepOne', {}))
+      }))
+  }
+  return Nav.unauthenticatedAccountMenu(navLinks)
 };
 
 const signOutLink: Nav.NavLink = {
@@ -525,12 +556,12 @@ function navAccountMenus(state: Immutable<State>): Nav.Props['accountMenus'] {
               children: 'My Profile',
               dest: routeDest(adt('userProfile', { userId: sessionUser.id }))
             },
-            sessionUser.type === UserType.Vendor
+            (sessionUser.type === UserType.Vendor
               ? {
                   children: 'My Organizations',
                   dest: routeDest(adt('userProfile', { userId: sessionUser.id, tab: 'organizations' as const }))
                 }
-              : undefined
+              : undefined)
           ])
         },
         {
@@ -576,6 +607,11 @@ function navAppLinks(state: Immutable<State>): Nav.Props['appLinks'] {
           children: 'Users',
           active: state.activeRoute.tag === 'userList',
           dest: routeDest(adt('userList', null))
+        },
+        {
+          children: 'Content',
+          active: state.activeRoute.tag === 'contentList',
+          dest: routeDest(adt('contentList', null))
         }
       ]);
     }

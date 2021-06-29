@@ -76,7 +76,7 @@ const init: PageInit<RouteParams, SharedState, State, Msg> = isUserType<RoutePar
     }
     const organizationsResult = await api.ownedOrganizations.readMany();
     if (!api.isValid(organizationsResult)) { return fail(); }
-    const evalContentResult = await api.getMarkdownFile(SWU_PROPOSAL_EVALUATION_CONTENT_ID);
+    const evalContentResult = await api.content.readOne(SWU_PROPOSAL_EVALUATION_CONTENT_ID);
     if (!api.isValid(evalContentResult)) { return fail(); }
     return valid(immutable({
       sessionUser: shared.sessionUser,
@@ -88,7 +88,7 @@ const init: PageInit<RouteParams, SharedState, State, Msg> = isUserType<RoutePar
         viewerUser: shared.sessionUser,
         opportunity,
         organizations: organizationsResult.value,
-        evaluationContent: evalContentResult.value
+        evaluationContent: evalContentResult.value.body
       })),
       submitTerms: immutable(await SubmitProposalTerms.init({
         proposal: {
@@ -219,7 +219,7 @@ export const component: PageComponent<RouteParams, SharedState, State, Msg> = {
       ),
       getFooter: () => (
         <span>
-          Need help? <Link dest={routeDest(adt('content', 'sprint-with-us-proposal-guide'))}>Read the guide</Link> to learn how to create and manage a <em>Sprint With Us</em> proposal.
+          Need help? <Link dest={routeDest(adt('contentView', 'sprint-with-us-proposal-guide'))}>Read the guide</Link> to learn how to create and manage a <em>Sprint With Us</em> proposal.
         </span>
       )
     })
@@ -275,7 +275,7 @@ export const component: PageComponent<RouteParams, SharedState, State, Msg> = {
               opportunityType='Sprint With Us'
               action='submitting'
               termsTitle='Sprint With Us Terms & Conditions'
-              termsRoute={adt('content', 'sprint-with-us-terms-and-conditions')}
+              termsRoute={adt('contentView', 'sprint-with-us-terms-and-conditions')}
               state={state.submitTerms}
               dispatch={mapComponentDispatch(dispatch, msg => adt('submitTerms', msg) as Msg)} />
           ),
