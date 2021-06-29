@@ -69,7 +69,6 @@ async function makeRouter(connection: Connection): Promise<Router<any, any, any,
           // object that can be passed to qs.stringify.
           const authQueryString = qs.stringify(authQuery as any);
           const authUrl = `${KEYCLOAK_URL}/auth/realms/${KEYCLOAK_REALM}/protocol/openid-connect/auth?${authQueryString}`;
-
           return {
             code: 302,
             headers: {
@@ -110,7 +109,6 @@ async function makeRouter(connection: Connection): Promise<Router<any, any, any,
           const headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
           // data as any --> pacify the compiler
           const response = await httpRequest(ClientHttpMethod.Post, `${KEYCLOAK_URL}/auth/realms/${KEYCLOAK_REALM}/protocol/openid-connect/token`, qs.stringify(data as any), headers);
-
           if (response.status !== 200) {
             return makeAuthErrorRedirect(request);
           }

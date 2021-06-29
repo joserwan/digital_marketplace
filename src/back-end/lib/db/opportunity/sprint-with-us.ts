@@ -106,6 +106,7 @@ async function rawSWUOpportunityToSWUOpportunity(connection: Connection, raw: Ra
     prototypePhase: prototypePhaseId,
     implementationPhase: implementationPhaseId,
     minTeamMembers,
+    versionId,
     ...restOfRaw
   } = raw;
 
@@ -119,7 +120,7 @@ async function rawSWUOpportunityToSWUOpportunity(connection: Connection, raw: Ra
     return result;
   }));
   const addenda = getValidValue(await readManyAddendum(connection, raw.id), undefined);
-  const teamQuestions = getValidValue(await readManyTeamQuestions(connection, raw.versionId), undefined);
+  const teamQuestions = getValidValue(await readManyTeamQuestions(connection, versionId), undefined);
   const inceptionPhase = inceptionPhaseId ? getValidValue(await readOneSWUOpportunityPhase(connection, inceptionPhaseId), undefined) : undefined;
   const prototypePhase = prototypePhaseId ? getValidValue(await readOneSWUOpportunityPhase(connection, prototypePhaseId), undefined) : undefined;
   const implementationPhase = getValidValue(await readOneSWUOpportunityPhase(connection, implementationPhaseId), undefined);
@@ -127,8 +128,6 @@ async function rawSWUOpportunityToSWUOpportunity(connection: Connection, raw: Ra
   if (!addenda || !teamQuestions || !implementationPhase) {
     throw new Error('unable to process opportunity');
   }
-
-  delete raw.versionId;
 
   return {
     ...restOfRaw,
@@ -167,16 +166,14 @@ async function rawSWUOpportunityAddendumToSWUOpportunityAddendum(connection: Con
 }
 
 async function rawSWUOpportunityPhaseToSWUOpportunityPhase(connection: Connection, raw: RawSWUOpportunityPhase): Promise<SWUOpportunityPhase> {
-  const { createdBy: createdById, ...restOfRaw } = raw;
+  const { createdBy: createdById, id, ...restOfRaw } = raw;
 
   const createdBy = createdById ? getValidValue(await readOneUserSlim(connection, createdById), undefined) : undefined;
-  const requiredCapabilities = getValidValue(await readManyRequiredCapabilities(connection, raw.id), undefined);
+  const requiredCapabilities = getValidValue(await readManyRequiredCapabilities(connection, id), undefined);
 
   if (!createdBy || !requiredCapabilities) {
     throw new Error('unable to process opportunity phase');
   }
-
-  delete raw.id;
 
   return {
     ...restOfRaw,
