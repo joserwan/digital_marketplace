@@ -155,7 +155,7 @@ const resource: Resource = {
                   name: getInvalidValue(validatedName, undefined),
                   email: getInvalidValue(validatedEmail, undefined),
                   jobTitle: getInvalidValue(validatedJobTitle, undefined),
-                  ocale: getInvalidValue(validatedLocale, undefined),
+                  locale: getInvalidValue(validatedLocale, undefined),
                   avatarImageFile: getInvalidValue(validatedAvatarImageFile, undefined)
                 })
               });

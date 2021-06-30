@@ -3,8 +3,6 @@ const path = require("path");
 const pathmodify = require("pathmodify");
 const envify = require("envify/custom");
 
-console.log({ envify: gruntConfig.frontEnd.env })
-
 module.exports = {
   frontEnd: {
     options: {
