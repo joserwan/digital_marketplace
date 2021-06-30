@@ -1,56 +1,72 @@
 {
-	"links": {
-		"sign-in": "Sign in",
-		"sign-up": "Sign up",
-		"opportunities": "Opportunities",
-		"organizations": "Organizations",
-		"home": "Home",
-		"about": "About",
-		"browse-opportunities": "Browse opportunities"
-	},
-	"landing": {
-		"header": "Collaborate <br/>with Québec<br/>government"
+  "account": {
+    "sign-in": {
+      "button": "account.sign-in.button",
+      "description": "account.sign-in.description"
+    },
+    "sign-up": {
+      "button": "account.sign-up.button",
+      "description": "account.sign-up.description"
+    },
+    "type": {
+      "select": {
+        "description": "account.type.select.description",
+        "title": "account.type.select.title"
+      },
+      "vendor": "account.type.vendor"
+    }
   },
   "formatedDateTime": "{{date}} at {{time}}",
-  "yes": "Yes",
+  "landing": {
+    "header": "Collaborate <br/>with Québec<br/>government"
+  },
+  "links": {
+    "about": "About",
+    "browse-opportunities": "Browse opportunities",
+    "home": "Home",
+    "opportunities": "Opportunities",
+    "organizations": "Organizations",
+    "sign-in": "Sign in",
+    "sign-up": "Sign up"
+  },
   "no": "No",
-	"notification": {
+  "notification": {
     "anyQuestion": "Pour toute question, veuillez envoyer un courriel à {{email}}.",
-		"opportunity": {
-			"cwu": {
-        "title": "Code With Us",
-        "information": {
-          "type": "Type",
-          "value": "Value",
-          "location": "Location",
-          "remoteOk": "Remote OK",
-          "proposalsDue": "Proposal dues"
-        },
-				"updated": {
-          "title": "A Code With Us Opportunity Has Been Updated",
-          "description": "The following Digital Marketplace opportunity has been updated:"
-        },
+    "opportunity": {
+      "cwu": {
         "actioned": {
           "cancelled": {
-            "title": "A Code With Us Opportunity Has Been Cancelled",
             "description": "You have cancelled the following opportunity on the Digital Marketplace:",
-            "summary": "CWU opportunity cancelled; sent to the administrator who actioned."
+            "summary": "CWU opportunity cancelled; sent to the administrator who actioned.",
+            "title": "A Code With Us Opportunity Has Been Cancelled"
           }
+        },
+        "information": {
+          "location": "Location",
+          "proposalsDue": "Proposal dues",
+          "remoteOk": "Remote OK",
+          "type": "Type",
+          "value": "Value"
         },
         "subscribed": {
           "cancelled": {
-            "title": "A Code With Us Opportunity Has Been Cancelled",
             "description": "The following Digital Marketplace opportunity has been cancelled:",
-            "summary": "CWU opportunity cancelled; sent to subscribed users and vendors with proposals."
+            "title": "A Code With Us Opportunity Has Been Cancelled"
           },
           "suspended": {
-            "title": "A Code With Us Opportunity Has Been Suspended",
             "description": "The following Digital Marketplace opportunity has been suspended:",
+            "notifyTheyMayChange": "If you have already submitted a proposal to this opportunity, you may make changes to it while the opportunity is suspended.",
             "summary": "CWU opportunity suspended; sent to subscribed users and vendors with proposals.",
-            "notifyTheyMayChange": "If you have already submitted a proposal to this opportunity, you may make changes to it while the opportunity is suspended."
+            "title": "A Code With Us Opportunity Has Been Suspended"
           }
+        },
+        "title": "Code With Us",
+        "updated": {
+          "description": "The following Digital Marketplace opportunity has been updated:",
+          "title": "A Code With Us Opportunity Has Been Updated"
         }
-			}
-		}
-	}
+      }
+    }
+  },
+  "yes": "Yes"
 }

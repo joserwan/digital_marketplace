@@ -146,7 +146,7 @@
     "grunt-sass": "^3.0.2",
     "grunt-shell": "^3.0.1",
     "grunt-terser": "^0.1.0",
-    "i18next-parser": "^3.3.0",
+    "i18next-parser": "^4.2.0",
     "identity-obj-proxy": "^3.0.0",
     "is-relative-url": "^3.0.0",
     "license-checker": "^25.0.1",

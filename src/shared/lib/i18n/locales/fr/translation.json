@@ -1,78 +1,77 @@
 {
-  "links": {
-    "sign-in": "Connexion",
-    "sign-up": "Créer un compte",
-    "opportunities": "Opportunités",
-    "organizations": "Organisations",
-    "home": "Accueil",
-    "about": "À propos",
-    "browse-opportunities": "Parcourez les opportunités"
+  "account": {
+    "sign-in": {
+      "button": "S'authentifier avec {{accountType}}",
+      "description": "Utilisez votre compte {{accountType}} pour vous authentifier à Échange entre concepteurs."
+    },
+    "sign-up": {
+      "button": "S'enregistrer avec {{accountType}}",
+      "description": "Les prestataires doivent avoir un compte {{accountType}} pour pouvoir s'authentifier à Échange entre concepteurs."
+    },
+    "type": {
+      "select": {
+        "description": "Choisissez le compte qui vous définit le mieux. L'accès à certaines fonctionnalités de l'application dépend du type de compte que vous sélectionnez.",
+        "title": "Choisissez un type de compte"
+      },
+      "vendor": "Prestataire"
+    }
   },
+  "formatedDateTime": "{{date}} à {{time}}",
   "landing": {
     "header": "Collaborez <br/>avec le gouvernement <br/>du Québec"
   },
-  "formatedDateTime": "{{date}} à {{time}}",
-  "yes": "Oui",
-  "no": "Non",
-  "account": {
-    "type": {
-      "select": {
-        "title": "Choisissez un type de compte",
-        "description": "Choisissez le compte qui vous définit le mieux. L'accès à certaines fonctionnalités de l'application dépend du type de compte que vous sélectionnez."
-      },
-      "vendor": "Prestataire"
-    },
-    "sign-up": {
-      "description": "Les prestataires doivent avoir un compte {{accountType}} pour pouvoir s'authentifier à Échange entre concepteurs.",
-      "button": "S'enregistrer avec {{accountType}}"
-    },
-    "sign-in": {
-      "description": "Utilisez votre compte {{accountType}} pour vous authentifier à Échange entre concepteurs.",
-      "button": "S'authentifier avec {{accountType}}"
-    }
+  "links": {
+    "about": "À propos",
+    "browse-opportunities": "Parcourez les opportunités",
+    "home": "Accueil",
+    "opportunities": "Opportunités",
+    "organizations": "Organisations",
+    "sign-in": "Connexion",
+    "sign-up": "Créer un compte"
   },
-	"notification": {
+  "no": "Non",
+  "notification": {
     "anyQuestion": "If you have any questions, please send an email to {{email}}.",
-		"opportunity": {
-			"cwu": {
-        "title": "Développez avec nous",
-        "information": {
-          "type": "Type",
-          "value": "Montant",
-          "location": "Lieu",
-          "remoteOk": "Travail à distance accepté",
-          "proposalsDue": "Échéance des soumissions"
-        },
-				"updated": {
-					"title": "Une opportunité Développez Avec Nous a été mise à jour",
-          "description": "L'opportunité Digital Marketplace suivante a été mise à jour:"
-        },
+    "opportunity": {
+      "cwu": {
         "actioned": {
           "cancelled": {
-            "title": "Une opportunité Développez Avec Nous a été annulée",
             "description": "Vous avez annulé l'opportunité Digital Marketplace suivante:",
-            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé à l'administateur qui l'a annulée."
+            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé à l'administateur qui l'a annulée.",
+            "title": "Une opportunité Développez Avec Nous a été annulée"
           },
           "suspended": {
-            "title": "Une opportunité Développez Avec Nous a été suspendue",
             "description": "Vous avez suspendu l'opportunité Digital Marketplace suivante:",
-            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé l'administateur qui l'a annulée."
+            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé l'administateur qui l'a annulée.",
+            "title": "Une opportunité Développez Avec Nous a été suspendue"
           }
+        },
+        "information": {
+          "location": "Lieu",
+          "proposalsDue": "Échéance des soumissions",
+          "remoteOk": "Travail à distance accepté",
+          "type": "Type",
+          "value": "Montant"
         },
         "subscribed": {
           "cancelled": {
-            "title": "Une opportunité Développez Avec Nous a été annulée",
             "description": "L'opportunité Digital Marketplace suivante a été annulée:",
-            "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé aux utilisateurs abonnés et aux soumissionaires."
+            "title": "Une opportunité Développez Avec Nous a été annulée"
           },
           "suspended": {
-            "title": "Une opportunité Développez Avec Nous a été suspendue",
             "description": "L'opportunité Digital Marketplace suivante a été suspendue:",
+            "notifyTheyMayChange": "Si vous avez déjà soumis une proposition à cette opportunité, vous pouvez y apporter des modification pendant que l'opportunité est suspendue.",
             "summary": "L'opportunité Développez Avec Nous a été annulée; envoyé aux utilisateurs abonnés et aux soumissionaires.",
-            "notifyTheyMayChange": "Si vous avez déjà soumis une proposition à cette opportunité, vous pouvez y apporter des modification pendant que l'opportunité est suspendue."
+            "title": "Une opportunité Développez Avec Nous a été suspendue"
           }
+        },
+        "title": "Développez avec nous",
+        "updated": {
+          "description": "L'opportunité Digital Marketplace suivante a été mise à jour:",
+          "title": "Une opportunité Développez Avec Nous a été mise à jour"
         }
-			}
-		}
-	}
+      }
+    }
+  },
+  "yes": "Oui"
 }
