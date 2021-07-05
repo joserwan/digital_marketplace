@@ -16,8 +16,6 @@ services:
       POSTGRES_DB: digitalmarketplace
   keycloak:
     image: keycloak
-    env_file:
-      - .env
     build: 
       context: ./keycloak
       args:
@@ -57,8 +55,6 @@ services:
     depends_on: 
       - keycloak
       - db
-    env_file:
-      - .env
     # La variable KEYCLOAK_URL est utilisée 
     # * coté client (qui ne reconnait pas le hostname du conteneur)
     # * coté serveur (qui ne peux pas trouver localhost:8080)
