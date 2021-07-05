@@ -1,0 +1,106 @@
+version: "3"
+services:
+  db:
+    image: postgres:10
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: wget http://localhost:5432 -q -t 1 --spider
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    environment:
+      POSTGRES_USER: digitalmarketplace
+      POSTGRES_PASSWORD: digitalmarketplace
+      POSTGRES_DB: digitalmarketplace
+  keycloak:
+    image: keycloak
+    env_file:
+      - .env
+    build: 
+      context: ./keycloak
+      args:
+        # Create Github application at https://github.com/settings/applications/new
+        - GITHUBID=${GITHUBID}
+        - GITHUBSECRET=${GITHUBSECRET}
+        - KEYCLOAKURL=http://localhost:8080
+        - ROOTURL=http://localhost:3000
+    healthcheck:
+      test: wget http://localhost:8080 -q -t 1 --spider
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    ports:
+      - 8080:8080
+    environment: 
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+  ui:
+    image: devexchange
+    build: 
+      context: .
+      target: development
+    healthcheck:
+      test: wget http://localhost:3000 -q -t 1 --spider
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    ports:
+      - 3000:3000
+      - 5000:5000 # Doc
+    volumes:
+      - ./:/usr/app/
+    #command: bash -c "pm2-runtime ecosystem.config.js"
+    depends_on: 
+      - keycloak
+      - db
+    env_file:
+      - .env
+    # La variable KEYCLOAK_URL est utilisée 
+    # * coté client (qui ne reconnait pas le hostname du conteneur)
+    # * coté serveur (qui ne peux pas trouver localhost:8080)
+    # En utilisant le réseau host, on rend localhost:8080 accessible
+    network_mode: "host"
+    environment:
+      - NODE_ENV=development
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=3000
+      - POSTGRESQL_SERVICE_HOST=localhost
+      - POSTGRESQL_SERVICE_PORT=5432
+      - TIMEZONE=Canada/Eastern
+      - DATABASE_USERNAME=digitalmarketplace
+      - DATABASE_PASSWORD=digitalmarketplace
+      - DATABASE_NAME=digitalmarketplace
+      - COOKIE_SECRET=foobar
+      - ORIGIN=http://localhost:3000
+      - KEYCLOAK_ADMIN_USER=admin
+      - KEYCLOAK_ADMIN_PASS=admin
+      - KEYCLOAK_CLIENT_ID=dm-app
+      - KEYCLOAK_REALM=digitalmarketplace
+      - KEYCLOAK_URL=http://localhost:8080
+      - FILE_STORAGE_DIR=./tmp
+      - SCHEDULED_DOWNTIME=
+      - KNEX_DEBUG=false
+      - UPDATE_HOOK_THROTTLE=60000
+      - SERVICE_TOKEN_HASH=
+      - SHOW_TEST_INDICATOR=true
+      - SWAGGER_ENABLE=true
+      - SWAGGER_UI_PATH=/swagger
+      - VENDOR_ACCOUNT_CREATION_DISABLED=1
+  selenium:
+    image: selenium/standalone-chrome-debug
+    network_mode: "host"
+    healthcheck:
+      test: wget http://localhost:4444 -q -t 1 --spider
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    ports:
+      - 4444:4444
+      - 5999:5900
+    volumes:
+      - /dev/shm:/dev/shm
