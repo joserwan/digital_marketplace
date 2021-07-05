@@ -1,4 +1,4 @@
-name: Unit tests
+name: Acceptance
 on: [push]
 jobs:
   build:

@@ -243,7 +243,7 @@ const MobileAccountMenu: View<Props> = props => {
       {actions.map((action, i, arr) => {
         const clonedAction = { ...action };
         if (clonedAction.tag === 'link' && clonedAction.value.button) {
-          clonedAction.value = { ...clonedAction.value, size: 'sm' };
+          clonedAction.value = { ...clonedAction.value, size: 'sm' as const };
         }
         const active = isAccountActionActive(action);
         const button = isAccountActionButton(action);
