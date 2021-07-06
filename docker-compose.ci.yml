@@ -43,7 +43,7 @@ services:
       context: .
       target: development
     healthcheck:
-      test: wget http://localhost:3000 -q -t 1 --spider
+      test: curl http://localhost:3000 --connect-timeout 1 --silent > /dev/null
       interval: 10s
       timeout: 10s
       retries: 3
@@ -94,12 +94,12 @@ services:
       - CI=true
   selenium:
     image: selenium/standalone-chrome-debug
-    # healthcheck:
-    #   test: curl http://localhost:4444 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 40s
+    healthcheck:
+      test: curl http://localhost:4444 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     depends_on: 
       ui:
         condition: service_healthy
