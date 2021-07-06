@@ -59,7 +59,6 @@ services:
     # * coté client (qui ne reconnait pas le hostname du conteneur)
     # * coté serveur (qui ne peux pas trouver localhost:8080)
     # En utilisant le réseau host, on rend localhost:8080 accessible
-    network_mode: "host"
     environment:
       - NODE_ENV=development
       - SERVER_HOST=0.0.0.0
@@ -77,6 +76,7 @@ services:
       - KEYCLOAK_CLIENT_ID=dm-app
       - KEYCLOAK_REALM=digitalmarketplace
       - KEYCLOAK_URL=http://localhost:8080
+      - KEYCLOAK_CLIENT_SECRET=random1234
       - FILE_STORAGE_DIR=./tmp
       - SCHEDULED_DOWNTIME=
       - KNEX_DEBUG=false
@@ -88,7 +88,6 @@ services:
       - VENDOR_ACCOUNT_CREATION_DISABLED=1
   selenium:
     image: selenium/standalone-chrome-debug
-    network_mode: "host"
     healthcheck:
       test: wget http://localhost:4444 -q -t 1 --spider
       interval: 10s

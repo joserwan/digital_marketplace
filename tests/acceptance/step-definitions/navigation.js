@@ -3,7 +3,7 @@ const { Condition, By, until } = require('selenium-webdriver');
 const { takeScreenshot, highlightElement, highlightElementAndScreenshot } = require('./debug')
 
 async function goToPage(path, doScreenshot=true){
-  await this.driver.get(`http://127.0.0.1:3000/${path}`);
+  await this.driver.get(`http://ui:3000/${path}`);
   await this.driver.wait(until.elementLocated(By.className('footer-top-bar')));
   await this.driver.wait(new Condition('StateManager is ready', async function(driver){ 
     const isReady = await driver.executeScript('const state = stateManager.getState(); return state.ready && state.transitionLoading === 0;')

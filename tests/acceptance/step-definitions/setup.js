@@ -43,7 +43,7 @@ Before({tags: tagsToSkip}, () => {
 Before(async function(){
   this.driver = await new Builder()
       .forBrowser('chrome')
-      .usingServer('http://localhost:4444/wd/hub')
+      .usingServer('http://selenium:4444/wd/hub')
       .withCapabilities(chromeCapabilities)
       .build()
   // Set little screen size if mobile
