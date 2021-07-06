@@ -38,6 +38,8 @@ if(process.env.CI){
   chromeOptions.args.push('no-sandbox')
 }
 
+console.log(process.env.CI, chromeOptions, process.env.CI ? 'OUI' : 'NON')
+
 chromeCapabilities.set('chromeOptions', chromeOptions);
 
 var tagsToSkip = "@todo";

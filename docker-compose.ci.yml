@@ -100,9 +100,9 @@ services:
     #   timeout: 10s
     #   retries: 3
     #   start_period: 40s
-    depends_on: 
-      ui:
-        condition: service_healthy
+    # depends_on: 
+    #   ui:
+    #     condition: service_healthy
     ports:
       - 4444:4444
       - 5999:5900
