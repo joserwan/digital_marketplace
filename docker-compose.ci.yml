@@ -106,5 +106,3 @@ services:
     ports:
       - 4444:4444
       - 5999:5900
-    volumes:
-      - /dev/shm:/dev/shm
