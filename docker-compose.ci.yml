@@ -43,7 +43,7 @@ services:
       context: .
       target: development
     healthcheck:
-      test: wget http://localhost:3000 -q -t 1 > /dev/null
+      test: wget http://localhost:3000 -q -t 1 --spider
       interval: 10s
       timeout: 10s
       retries: 3
