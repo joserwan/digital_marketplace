@@ -9,5 +9,7 @@ jobs:
       run: docker-compose -f docker-compose.ci.yml up -d
     - name: List containers
       run: docker ps
+    - name: Wait for containers
+      run: sleep 60
     - name: Run acceptance tests
       run: docker-compose exec ui npm run acceptance:fr
