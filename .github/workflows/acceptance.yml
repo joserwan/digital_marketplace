@@ -11,5 +11,7 @@ jobs:
       run: docker ps
     - name: Wait for containers
       run: sleep 60
+    - name: List containers 2
+      run: docker ps
     - name: Run acceptance tests
       run: docker-compose exec ui npm run acceptance:fr
