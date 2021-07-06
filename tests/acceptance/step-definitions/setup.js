@@ -35,6 +35,7 @@ var chromeOptions = {
 
 if(process.env.CI){
   chromeOptions.args.push('headless')
+  chromeOptions.args.push('no-sandbox')
 }
 
 chromeCapabilities.set('chromeOptions', chromeOptions);
