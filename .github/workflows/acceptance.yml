@@ -7,5 +7,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run docker-compose stack
       run: docker-compose -f docker-compose.ci.yml up -d
+    - name: List containers
+      run: docker ps
     - name: Run acceptance tests
       run: docker-compose exec ui npm run acceptance:fr

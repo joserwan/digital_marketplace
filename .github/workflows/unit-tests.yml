@@ -1,12 +1,12 @@
-name: Unit tests
-on: [push]
-jobs:
-  back-end:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - run: npm install
-      - run: npm run back-end:test
+# name: Unit tests
+# on: [push]
+# jobs:
+#   back-end:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: actions/setup-node@v2
+#         with:
+#           node-version: '14'
+#       - run: npm install
+#       - run: npm run back-end:test
