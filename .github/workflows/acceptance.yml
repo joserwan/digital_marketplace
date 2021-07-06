@@ -16,4 +16,4 @@ jobs:
     - name: List containers 2
       run: docker-compose -f docker-compose.ci.yml logs ui
     - name: Run acceptance tests
-      run: docker-compose -f docker-compose.ci.yml -T exec ui npm run acceptance:fr
+      run: docker-compose -f docker-compose.ci.yml exec  -T ui npm run acceptance:fr
