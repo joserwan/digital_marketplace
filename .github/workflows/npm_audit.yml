@@ -1,6 +1,12 @@
 name: Security
 on: [push]
 jobs:
+  ibm:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Audit for vulnerabilities
+      run: npx audit-ci --moderate
   salus_scan_job:
     runs-on: ubuntu-latest
     name: Salus Security Scan Example
