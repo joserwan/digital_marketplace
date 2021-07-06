@@ -86,15 +86,15 @@ services:
       - CI=true
   selenium:
     image: selenium/standalone-chrome-debug
-    # healthcheck:
-    #   test: curl http://localhost:4444 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
-    #   interval: 10s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 40s
-    # depends_on: 
-    #   ui:
-    #     condition: service_healthy
+    healthcheck:
+      test: curl http://localhost:4444 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on: 
+      ui:
+        condition: service_healthy
     ports:
       - 4444:4444
       - 5999:5900
