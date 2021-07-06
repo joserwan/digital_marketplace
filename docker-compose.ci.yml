@@ -5,7 +5,7 @@ services:
     ports:
       - 5432:5432
     healthcheck:
-      test: wget http://localhost:5432 -q -t 1 --spider
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 10s
       retries: 3
@@ -14,6 +14,7 @@ services:
       POSTGRES_USER: digitalmarketplace
       POSTGRES_PASSWORD: digitalmarketplace
       POSTGRES_DB: digitalmarketplace
+
   keycloak:
     image: keycloak
     build: 
@@ -25,7 +26,7 @@ services:
         - KEYCLOAKURL=http://localhost:8080
         - ROOTURL=http://localhost:3000
     healthcheck:
-      test: wget http://localhost:8080 -q -t 1 --spider
+      test: curl http://localhost:8080 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
       interval: 10s
       timeout: 10s
       retries: 3
@@ -35,13 +36,14 @@ services:
     environment: 
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
+      
   ui:
     image: devexchange
     build: 
       context: .
       target: development
     healthcheck:
-      test: wget http://localhost:3000 -q -t 1 --spider
+      test: wget http://localhost:3000 -q -t 1
       interval: 10s
       timeout: 10s
       retries: 3
@@ -53,8 +55,11 @@ services:
       - ./:/usr/app/
     #command: bash -c "pm2-runtime ecosystem.config.js"
     depends_on: 
-      - keycloak
-      - db
+      keycloak:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+
     # La variable KEYCLOAK_URL est utilisée 
     # * coté client (qui ne reconnait pas le hostname du conteneur)
     # * coté serveur (qui ne peux pas trouver localhost:8080)
@@ -90,11 +95,14 @@ services:
   selenium:
     image: selenium/standalone-chrome-debug
     healthcheck:
-      test: wget http://localhost:4444 -q -t 1 --spider
+      test: curl http://localhost:4444 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
       interval: 10s
       timeout: 10s
       retries: 3
       start_period: 40s
+    depends_on: 
+      ui:
+        condition: service_healthy
     ports:
       - 4444:4444
       - 5999:5900
