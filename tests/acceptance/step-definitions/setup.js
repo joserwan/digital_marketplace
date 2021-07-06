@@ -28,11 +28,15 @@ var chromeOptions = {
       'high-dpi-support=0.65',
       'incognito',
       'force-device-scale-factor=0.65',
-    //  'headless',
       'disable-dev-shm-usage',
       'disable-notifications',
     ]
 };
+
+if(process.env.CI){
+  chromeOptions.args.push('headless')
+}
+
 chromeCapabilities.set('chromeOptions', chromeOptions);
 
 var tagsToSkip = "@todo";

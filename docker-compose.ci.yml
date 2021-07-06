@@ -86,6 +86,7 @@ services:
       - SWAGGER_ENABLE=true
       - SWAGGER_UI_PATH=/swagger
       - VENDOR_ACCOUNT_CREATION_DISABLED=1
+      - CI=true
   selenium:
     image: selenium/standalone-chrome-debug
     healthcheck:
