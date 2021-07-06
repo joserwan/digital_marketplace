@@ -35,8 +35,7 @@
     "typedoc:start": "npx serve --config typedoc/serve.json typedoc",
     "docs:readme-toc": "npx markdown-toc --maxdepth 3 -i README.md",
     "docs:licenses": "npx license-checker | grep -v 'path:' | grep -v 'licenseFile:' > docs/OPEN_SOURCE_LICENSES.txt",
-    "docs:db": "npx pg-doc --out docs/DATABASE.md --connection",
-    "i18n:parse": "npx i18next"
+    "docs:db": "npx pg-doc --out docs/DATABASE.md --connection"
   },
   "repository": {
     "type": "git",
@@ -107,6 +106,7 @@
   "devDependencies": {
     "@cucumber/cucumber": "^7.2.1",
     "@cucumber/pretty-formatter": "^1.0.0-alpha.0",
+    "@lodder/grunt-postcss": ">=3.0",
     "@types/chai": "^4.2.18",
     "@types/chai-dom": "0.0.10",
     "@types/cors": "^2.8.7",
@@ -141,12 +141,9 @@
     "grunt-contrib-htmlmin": "^3.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-ejs": "^1.0.0",
-    "@lodder/grunt-postcss": ">=3.0",
-    "postcss": ">=8.0",
     "grunt-sass": "^3.0.2",
     "grunt-shell": "^3.0.1",
     "grunt-terser": "^0.1.0",
-    "i18next-parser": "^4.2.0",
     "identity-obj-proxy": "^3.0.0",
     "is-relative-url": "^3.0.0",
     "license-checker": "^25.0.1",
@@ -159,6 +156,7 @@
     "path-to-regexp": "^6.1.0",
     "pathmodify": "^0.5.0",
     "pg-doc": "^0.1.1",
+    "postcss": ">=8.0",
     "protractor": "^7.0.0",
     "react-markdown": "^6.0.2",
     "react-select": "^3.0.8",
