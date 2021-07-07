@@ -57,6 +57,7 @@ export function makeJsonRequestBody(value: JsonValue): JsonRequestBody {
 
 export interface FileUpload<Metadata> {
   readonly name: string;
+  readonly tmpName?: string;
   readonly path: string;
   readonly metadata?: Metadata;
 }

@@ -71,6 +71,7 @@ function parseMultipartRequest<FileUploadMetadata>(maxSize: number, parseFileUpl
     let filePath: string | undefined;
     let metadata = '';
     let fileName = '';
+    let tmpName = '';
     const form = new multiparty.Form();
     // Listen for files and fields.
     // We only want to receive one file, so we disregard all other files.
@@ -80,7 +81,8 @@ function parseMultipartRequest<FileUploadMetadata>(maxSize: number, parseFileUpl
       // We expect the file's field to have the name `file`.
       if (part.name === 'file' && part.filename && !filePath) {
         // We only want to receive one file.
-        const tmpPath = path.join(TMP_DIR, generateUuid());
+        tmpName = generateUuid();
+        const tmpPath = path.join(TMP_DIR, tmpName);
         part.pipe(createWriteStream(tmpPath));
         filePath = tmpPath;
       } else if (part.name === 'metadata' && !part.filename && !metadata) {
@@ -109,6 +111,7 @@ function parseMultipartRequest<FileUploadMetadata>(maxSize: number, parseFileUpl
             resolve(makeFileRequestBody({
               name: fileName,
               path: filePath,
+              tmpName: tmpName,
               metadata: parseFileUploadMetadata(jsonMetadata.value)
             }));
             break;
@@ -236,8 +239,8 @@ export function express<ParsedReqBody, ValidatedReqBody, ReqBodyErrors, HookStat
         // Respond to the request.
         const response = await route.handler.respond(validatedRequest);
         // Delete temporary file if it exists.
-        if (body.tag === 'file' && existsSync(body.value.path)) {
-          unlinkSync(body.value.path);
+        if (body.tag === 'file' && body.value.tmpName && existsSync(body.value.path)) {
+          unlinkSync(path.join(TMP_DIR, body.value.tmpName));
         }
         // Run the after hook if specified.
         // Note: we run the after hook after our business logic has completed,
