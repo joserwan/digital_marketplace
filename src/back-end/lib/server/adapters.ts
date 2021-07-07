@@ -16,6 +16,7 @@ import multiparty from 'multiparty';
 import * as path from 'path';
 import { addDays, parseJsonSafely } from 'shared/lib';
 import { Validation } from 'shared/lib/validation';
+import sanitize from 'sanitize-filename';
 import swaggerUI from 'swagger-ui-express';
 
 import i18nMiddleware from 'i18next-http-middleware';
@@ -239,8 +240,11 @@ export function express<ParsedReqBody, ValidatedReqBody, ReqBodyErrors, HookStat
         // Respond to the request.
         const response = await route.handler.respond(validatedRequest);
         // Delete temporary file if it exists.
-        if (body.tag === 'file' && body.value.tmpName && existsSync(body.value.path)) {
-          unlinkSync(path.join(TMP_DIR, body.value.tmpName));
+        if (body.tag === 'file' && body.value.tmpName) {
+          const tmpPath = path.join(TMP_DIR, sanitize(body.value.tmpName))
+          if(existsSync(tmpPath)){
+            unlinkSync(path.join(TMP_DIR, sanitize(body.value.tmpName)));
+          }
         }
         // Run the after hook if specified.
         // Note: we run the after hook after our business logic has completed,
