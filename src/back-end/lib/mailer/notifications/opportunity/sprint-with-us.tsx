@@ -164,7 +164,7 @@ export const newSWUOpportunitySubmittedForReviewAuthor = makeSend(newSWUOpportun
 export async function newSWUOpportunitySubmittedForReviewAuthorT(recipient: User, opportunity: SWUOpportunity): Promise<Emails> {
   const title = 'Your Sprint With Us Opportunity Has Been Submitted For Review'; // Used for subject line and heading
   const description = 'You have submitted the following Digital Marketplace opportunity for review:';
-  return[{
+  return [{
     summary: 'SWU opportunity submitted for review; sent to the submitting government user.',
     to: recipient.email || '',
     subject: title,
@@ -188,7 +188,7 @@ export const successfulSWUPublication = makeSend(successfulSWUPublicationT);
 export async function successfulSWUPublicationT(recipient: User, opportunity: SWUOpportunity, repost: boolean): Promise<Emails> {
   const title = `Your Sprint With Us Opportunity Has Been ${repost ? 'Re-posted' : 'Posted'}`;
   const description = `You have successfully ${repost ? 're-posted' : 'posted'} the following Digital Marketplace opportunity`;
-  return[{
+  return [{
     summary: `SWU successfully ${repost ? 're-published' : 'published'}; sent to publishing government user.`,
     to: recipient.email || [],
     subject: title,
@@ -198,7 +198,7 @@ export async function successfulSWUPublicationT(recipient: User, opportunity: SW
       descriptionLists: [makeSWUOpportunityInformation(opportunity)],
       body: (
         <div>
-          <p style={{...templates.styles.utilities.font.italic}}>What Happens Next?</p>
+          <p style={{ ...templates.styles.utilities.font.italic }}>What Happens Next?</p>
           <p>Sit back and relax as Vendors submit proposals to your opportunity. You will not be able to view these proposals until the opportunity has reached its closing date and time.</p>
           <p>Once the opportunity has closed, you will be notified that the proposal submissions are ready for your review.</p>
           <p>If you would like to make a change to your opportunity, such as adding an addendum, simply <templates.Link text='sign in' url={templates.makeUrl('sign-in')} /> and access the opportunity via your dashboard.</p>

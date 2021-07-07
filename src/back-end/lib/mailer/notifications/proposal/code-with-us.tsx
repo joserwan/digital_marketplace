@@ -83,7 +83,7 @@ export async function successfulCWUProposalSubmissionT(recipient: User, opportun
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       body: (
         <div>
           <p style={{...templates.styles.utilities.font.italic}}>What Happens Next?</p>
@@ -109,7 +109,7 @@ export async function awardedCWUProposalSubmissionT(recipient: User, opportunity
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity, false)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale, false)],
       body: (
         <div>
           <p>If you would like to view your total score, <templates.Link text='sign in' url={templates.makeUrl('sign-in')} /> and access your proposal via your dashboard.</p>
@@ -134,7 +134,7 @@ export async function unsuccessfulCWUProposalSubmissionT(recipient: User, opport
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity, false)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale, false)],
       body: (
         <div>
           <p>The opportunity has been awarded to {opportunity.successfulProponent?.name || EMPTY_STRING}.</p>
@@ -158,7 +158,7 @@ export async function disqualifiedCWUProposalSubmissionT(recipient: User, opport
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       body: (
         <div>
           <p>If you have any questions, please send an email to <templates.Link text={CONTACT_EMAIL} url={CONTACT_EMAIL} />.</p>
@@ -181,7 +181,7 @@ export async function withdrawnCWUProposalSubmissionProposalAuthorT(recipient: U
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       body: (
         <div>
           <p>If you would like to resubmit a proposal to the opportunity you may do so prior to the proposal deadline.</p>
@@ -204,7 +204,7 @@ export async function withdrawnCWUProposalSubmissionT(recipient: User, withdrawn
     html: templates.simple({
       title,
       description,
-      descriptionLists: [makeCWUOpportunityInformation(opportunity)],
+      descriptionLists: [makeCWUOpportunityInformation(opportunity, recipient.locale)],
       callsToAction: [viewCWUOpportunityCallToAction(opportunity)]
     })
   }];

@@ -1,0 +1,13 @@
+name: Acceptance
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run docker-compose stack
+      run: docker-compose -f docker-compose.ci.yml up -d
+    - name: List containers
+      run: docker-compose -f docker-compose.ci.yml ps
+    - name: Run acceptance tests
+      run: docker-compose -f docker-compose.ci.yml exec -T ui npm run acceptance:fr

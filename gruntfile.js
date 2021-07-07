@@ -5,8 +5,18 @@ const prefix = a => b => `/${a ? deslash(a) + '/' : ''}${deslash(b)}`;
 const NODE_ENV = process.env.NODE_ENV === "development" ? "development" : "production";
 const CONTACT_EMAIL = process.env.CONTACT_EMAIL || "digitalmarketplace@gov.bc.ca";
 const PATH_PREFIX = process.env.PATH_PREFIX || "";
-const VENDOR_ACCOUNT_CREATION_DISABLED = process.env.VENDOR_ACCOUNT_CREATION_DISABLED
-const SHOW_TEST_INDICATOR = process.env.SHOW_TEST_INDICATOR || "";
+const {
+  VENDOR_ACCOUNT_CREATION_DISABLED, 
+  SHOW_TEST_INDICATOR,
+  GOV_IDP_SUFFIX,
+  GOV_IDP_NAME,
+  PROVINCIAL_IDP_NAME,
+  VENDOR_IDP_SUFFIX,
+  TIMEZONE,
+  CWU_MAX_BUDGET,
+  SWU_MAX_BUDGET,
+  DEFAULT_PAGE_SIZE,
+} = process.env;
 const srcFrontEnd = path.resolve(__dirname, "./src/front-end");
 const srcBackEnd = path.resolve(__dirname, "./src/back-end");
 const srcScripts = path.resolve(__dirname, "./src/scripts");
@@ -41,6 +51,15 @@ global.gruntConfig = {
       PATH_PREFIX,
       SHOW_TEST_INDICATOR,
       VENDOR_ACCOUNT_CREATION_DISABLED,
+      CONTACT_EMAIL,
+      GOV_IDP_SUFFIX,
+      GOV_IDP_NAME,
+      PROVINCIAL_IDP_NAME,
+      VENDOR_IDP_SUFFIX,
+      TIMEZONE,
+      CWU_MAX_BUDGET,
+      SWU_MAX_BUDGET,
+      DEFAULT_PAGE_SIZE,
     }
   },
   backEnd: {

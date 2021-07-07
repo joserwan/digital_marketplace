@@ -4,14 +4,19 @@ services:
     image: postgres:10
     ports:
       - 5432:5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     environment:
       POSTGRES_USER: digitalmarketplace
       POSTGRES_PASSWORD: digitalmarketplace
       POSTGRES_DB: digitalmarketplace
+
   keycloak:
     image: keycloak
-    env_file:
-      - .env
     build: 
       context: ./keycloak
       args:
@@ -20,32 +25,37 @@ services:
         - GITHUBSECRET=${GITHUBSECRET}
         - KEYCLOAKURL=http://localhost:8080
         - ROOTURL=http://localhost:3000
-    ports:
-      - 8080:8080
+    healthcheck:
+      test: curl http://localhost:8080 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     environment: 
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=admin
+      
   ui:
     image: devexchange
     build: 
       context: .
       target: development
-    ports:
-      - 3000:3000
-      - 5000:5000 # Doc
-    volumes:
-      - ./:/usr/app/
-    #command: bash -c "pm2-runtime ecosystem.config.js"
+    healthcheck:
+      test: curl http://localhost:3000 --connect-timeout 1 --silent > /dev/null
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     depends_on: 
-      - keycloak
-      - db
-    env_file:
-      - .env
+      keycloak:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+
     # La variable KEYCLOAK_URL est utilisée 
     # * coté client (qui ne reconnait pas le hostname du conteneur)
     # * coté serveur (qui ne peux pas trouver localhost:8080)
     # En utilisant le réseau host, on rend localhost:8080 accessible
-    network_mode: "host"
     environment:
       - NODE_ENV=development
       - SERVER_HOST=0.0.0.0
@@ -63,6 +73,7 @@ services:
       - KEYCLOAK_CLIENT_ID=dm-app
       - KEYCLOAK_REALM=digitalmarketplace
       - KEYCLOAK_URL=http://localhost:8080
+      - KEYCLOAK_CLIENT_SECRET=random1234
       - FILE_STORAGE_DIR=./tmp
       - SCHEDULED_DOWNTIME=
       - KNEX_DEBUG=false
@@ -72,11 +83,18 @@ services:
       - SWAGGER_ENABLE=true
       - SWAGGER_UI_PATH=/swagger
       - VENDOR_ACCOUNT_CREATION_DISABLED=1
+      - CI=true
   selenium:
     image: selenium/standalone-chrome-debug
-    network_mode: "host"
+    healthcheck:
+      test: curl http://localhost:4444 --connect-timeout 1 --silent --stderr /dev/null > /dev/null
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    depends_on: 
+      ui:
+        condition: service_healthy
     ports:
       - 4444:4444
       - 5999:5900
-    volumes:
-      - /dev/shm:/dev/shm

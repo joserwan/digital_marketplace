@@ -18,6 +18,13 @@ import { addDays, parseJsonSafely } from 'shared/lib';
 import { Validation } from 'shared/lib/validation';
 import swaggerUI from 'swagger-ui-express';
 
+import i18nMiddleware from 'i18next-http-middleware';
+import i18next, { i18n } from 'i18next'
+i18next.use(i18nMiddleware.LanguageDetector).init({
+  preload: ['en', 'fr']
+})
+
+
 const SESSION_COOKIE_NAME = 'sid';
 
 export interface AdapterRunParams<SupportedRequestBodies, ParsedReqBody, ValidatedReqBody, ReqBodyErrors, SupportedResponseBodies, HookState, Session, FileUploadMetaData> {
@@ -257,13 +264,19 @@ export function express<ParsedReqBody, ValidatedReqBody, ReqBodyErrors, HookStat
     // Parse JSON request bodies when provided.
     app.use(bodyParser.json({
       type: 'application/json'
-    }));
+    }));    
 
     // Sign and parse cookies.
     app.use(cookieParser(COOKIE_SECRET));
 
     // Set up CORS to limit API access to specific domains
     app.use(corsLib(corsOptionDelegate));
+
+    app.use(
+      i18nMiddleware.handle(i18next, function(req: expressLib.Request, res: expressLib.Response, options: Object, i18next: i18n) { 
+        return true;
+       })
+    )
 
     // Mount each route to the Express application.
     router.forEach(route => {

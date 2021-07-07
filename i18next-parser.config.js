@@ -2,7 +2,7 @@ module.exports = {
   contextSeparator: '_',
   // Key separator used in your translation keys
 
-  createOldCatalogs: true,
+  createOldCatalogs: false,
   // Save the \_old files
 
   defaultNamespace: 'translation',
@@ -48,24 +48,25 @@ module.exports = {
   // Namespace separator used in your translation keys
   // If you want to use plain english keys, separators such as `.` and `:` will conflict. You might want to set `keySeparator: false` and `namespaceSeparator: false`. That way, `t('Status: Loading...')` will not think that there are a namespace and three separator dots for instance.
 
-  output: 'src/front-end/typescript/lib/i18n/locales/$LOCALE/$NAMESPACE.json',
+  output: 'src/shared/lib/i18n/locales/$LOCALE/$NAMESPACE.json',
   // Supports $LOCALE and $NAMESPACE injection
   // Supports JSON (.json) and YAML (.yml) file formats
   // Where to write the locale files relative to process.cwd()
 
   input: [
+    'src/back-end/lib/**/*.tsx',
     'src/front-end/typescript/lib/**/*.tsx'
   ],
   // An array of globs that describe where to look for source files
   // relative to the location of the configuration file
 
-  sort: false,
+  sort: true,
   // Whether or not to sort the catalog
 
   skipDefaultValues: false,
   // Whether to ignore default values.
 
-  useKeysAsDefaultValue: false,
+  useKeysAsDefaultValue: true,
   // Whether to use the keys as the default value; ex. "Hello": "Hello", "World": "World"
   // This option takes precedence over the `defaultValue` and `skipDefaultValues` options
 

@@ -22,3 +22,4 @@ tags
 __tmp/
 /openshift/examples/
 coverage
+translation_old.json

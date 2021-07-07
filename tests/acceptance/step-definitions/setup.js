@@ -28,11 +28,18 @@ var chromeOptions = {
       'high-dpi-support=0.65',
       'incognito',
       'force-device-scale-factor=0.65',
-    //  'headless',
       'disable-dev-shm-usage',
       'disable-notifications',
     ]
 };
+
+if(process.env.CI){
+  chromeOptions.args.push('headless')
+  chromeOptions.args.push('no-sandbox')
+}
+
+console.log(process.env.CI, chromeOptions, process.env.CI ? 'OUI' : 'NON')
+
 chromeCapabilities.set('chromeOptions', chromeOptions);
 
 var tagsToSkip = "@todo";
@@ -43,7 +50,7 @@ Before({tags: tagsToSkip}, () => {
 Before(async function(){
   this.driver = await new Builder()
       .forBrowser('chrome')
-      .usingServer('http://localhost:4444/wd/hub')
+      .usingServer('http://selenium:4444/wd/hub')
       .withCapabilities(chromeCapabilities)
       .build()
   // Set little screen size if mobile

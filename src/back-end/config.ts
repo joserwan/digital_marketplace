@@ -3,8 +3,8 @@ import { console as consoleAdapter } from 'back-end/lib/logger/adapters';
 import dotenv from 'dotenv';
 import findUp from 'find-up';
 import { existsSync, mkdirSync } from 'fs';
-import { dirname, join, resolve } from 'path';
 import SendmailTransport from 'nodemailer/lib/sendmail-transport';
+import { dirname, join, resolve } from 'path';
 import { parseBooleanEnvironmentVariable } from 'shared/config';
 
 // HARDCODED CONFIG
@@ -125,7 +125,7 @@ const developmentSendmailMailerConfigOptions: SendmailTransport.Options = {
 
 const developmentMailerConfigOptions = get('MAILER_GMAIL_USER', '')
 ? developmentGmailMailerConfigOptions
-: developmentSendmailMailerConfigOptions
+: developmentSendmailMailerConfigOptions;
 
 export const MAILER_CONFIG = ENV === 'development' ? developmentMailerConfigOptions : productionMailerConfigOptions;
 

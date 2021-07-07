@@ -47,6 +47,7 @@ export interface User {
   deactivatedBy: Id | null;
   capabilities: string[];
   idpId: string;
+  locale: string;
 }
 
 export interface UserSlim {
@@ -104,6 +105,7 @@ export interface UpdateProfileRequestBody {
   name: string;
   email: string;
   jobTitle: string;
+  locale: string;
   avatarImageFile?: Id;
 }
 
